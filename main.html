@@ -6,14 +6,33 @@
     <title>Daily Anime</title>
 </head>
 <body>
-    <form action="/add_quote" method="post" style="display: flex; flex-direction: column;">
-        <label for="quote">Quote: </label>
-        <textarea name="quote" rows="4" cols="50"></textarea>
-        <label for="character">Character: </label>
-        <input name="character" type="text"/>
-        <label for="anime">Anime: </label>
-        <input name="anime" type="text"/>
-        <button type="submit">Submit</button>
-    </form>
+
+    <h3>Add Quote</h3>
+    <div style="width: 35%; height: 20%">
+        <form action="/add_quote" method="post" style="display: flex; flex-direction: column;">
+            <label for="quote">Quote: </label>
+            <textarea name="quote" rows="4" cols="50"></textarea>
+            <div>
+                <label for="character">Character: </label>
+                <input name="character" type="text"/>
+            </div>
+
+            <div>
+                <label for="anime">Anime: </label>
+                <input name="anime" type="text"/>
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <h3 style="margin-top: 5%;">Delete Quote</h3>
+    <div style="width: 35%; height: 20%; margin-top: 1%;">
+        <form action="/delete_quote" method="post" style="display: flex; flex-direction: column;">
+            <label for="quote">Quote: </label>
+            <textarea name="quote" rows="4" cols="50"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    
 </body>
 </html>
