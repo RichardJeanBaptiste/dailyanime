@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const db = require('./db')
+const cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
 const port = 3000
@@ -9,17 +10,26 @@ const port = 3000
 require('dotenv').config()
 
 app.use(bodyParser.urlencoded())
-
 app.use(bodyParser.json())
+app.use(cors())
 
 app.get('/', async (req,res) => {
     res.sendFile(path.join(__dirname, "main.html"))
 })
 
-app.get('/test', async (req,res) => {
-    const { rows } = await db.query('SELECT * FROM test');
-    res.json(rows);
+app.get('/view_quotes', async (req, res) => {
+    res.send("Quote Page")
 })
+
+app.get('/quotes', async (req, res) => {
+    const { rows } = await db.query('SELECT * FROM quotes');
+    res.json(rows);
+});
+
+app.get('/quotes/:char', async (req,res) => {
+    res.send(`Character : ${char}`)
+});
+
 
 app.post('/add_quote', async (req, res) => {
 
