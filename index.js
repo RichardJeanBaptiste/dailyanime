@@ -5,7 +5,12 @@ const cors = require('cors')
 const path = require('path')
 const bodyParser = require('body-parser')
 const port = 3000
-
+/**
+ * 
+ * TODO 
+ * Edit dashboard UI
+ *     - Add Multiple Values with one call
+ */
 
 require('dotenv').config()
 
@@ -27,21 +32,37 @@ app.get('/quotes', async (req, res) => {
 });
 
 app.get('/quotes/:char', async (req,res) => {
-    res.send(`Character : ${char}`)
+
+    let cString = req.params.char;
+
+    let searchQuery = `
+        SELECT quote,anime FROM quotes
+        WHERE character = $1
+    `;
+
+    try {
+        const { rows } = await db.query(searchQuery, [cString]);
+        res.json(rows);
+    } catch (error) {
+        console.error("Database error:", error);
+        res.status(500).json({message: `An error occured while trying to view query : ${cString}`});
+    }
+    
 });
 
 
 app.post('/add_quote', async (req, res) => {
 
     const insertQuery = `
-        INSERT INTO quotes(quote, character, anime)
-        VALUES ($1, $2, $3)
+        INSERT INTO quotes(quote, character, anime, img_links)
+        VALUES ($1, $2, $3, $4)
         RETURNING id;
     `;
 
     try {
         const { quote , character, anime, links } = req.body;
-        const result = await db.query(insertQuery, [quote, character, anime]);
+        const imgs = [links.img1, links.img2, links.img3];
+        const result = await db.query(insertQuery, [quote, character, anime, imgs]);
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error("Database error:", error);
