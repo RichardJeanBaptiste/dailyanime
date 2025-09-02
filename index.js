@@ -8,8 +8,6 @@ const port = 3000
 /**
  * 
  * TODO 
- * Edit dashboard UI
- *     - Add Multiple Values with one call
  */
 
 require('dotenv').config()
@@ -53,16 +51,30 @@ app.get('/quotes/:char', async (req,res) => {
 
 app.post('/add_quote', async (req, res) => {
 
-    const insertQuery = `
-        INSERT INTO quotes(quote, character, anime, img_links)
-        VALUES ($1, $2, $3, $4)
-        RETURNING id;
-    `;
+    const flatValues = [];
+    const placeholders = [];
+    let placeholderIndex = 1;
 
     try {
-        const { quote , character, anime, links } = req.body;
+        //console.log(req.body);
+        const { quotes , character, anime, links } = req.body;
         const imgs = [links.img1, links.img2, links.img3];
-        const result = await db.query(insertQuery, [quote, character, anime, imgs]);
+
+        quotes.forEach((quote) => {
+            //console.log(quote);
+            flatValues.push(quote, character, anime, imgs);
+            placeholders.push(`($${placeholderIndex++}, $${placeholderIndex++}, $${placeholderIndex++}, $${placeholderIndex++})`);
+        });
+
+        const valuesString = placeholders.join(', ');
+
+        const insertQuery = `
+            INSERT INTO quotes(quote, character, anime, img_links)
+            VALUES ${valuesString}
+            RETURNING id;
+        `;
+
+        const result = await db.query(insertQuery, flatValues);
         res.status(201).json(result.rows[0]);
     } catch (error) {
         console.error("Database error:", error);

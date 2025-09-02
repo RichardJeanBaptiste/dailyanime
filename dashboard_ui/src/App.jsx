@@ -5,13 +5,15 @@ import './App.css'
  * 
  * TODO:
  *  Fix Proxy
- *  Add Multiple Quotes
  */
 
 function App() {
 
+  const [ currentQuote, setCurrentQuote ] = useState("")
+
+  const [quotesToAdd, setAddQuotes] = useState([]); 
+
   const [quoteForm, setQuoteForm] = useState({
-    quote: '',
     character: '',
     anime: '',
     links: {
@@ -21,16 +23,20 @@ function App() {
     }
   });
 
-  const [quotesToAdd, setAddQuotes] = useState([]); 
-
+  
   const addQuote = async () => {
+
+    let x = {
+      quotes: quotesToAdd,
+      ...quoteForm,
+    }
     
     const query = await fetch('http://localhost:3000/add_quote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body:JSON.stringify(quoteForm),
+      body:JSON.stringify(x),
     });
 
     console.log(quoteForm);
@@ -43,10 +49,15 @@ function App() {
     }    
   };
 
+  const editCurrentQuote = (e) => {
+    setCurrentQuote(e.target.value);
+  }
+
   const addToQuotesArr = () => {
     let x = [...quotesToAdd];
-    x.push("d");
+    x.push(currentQuote);
     setAddQuotes(x);
+    setCurrentQuote("");
   }
 
   const editQuoteForm = (e) => {
@@ -69,8 +80,9 @@ function App() {
   }
 
   const clearForm = () => {
+    setCurrentQuote("");
+    setAddQuotes([]);
     setQuoteForm({
-        quote: '',
         character: '',
         anime: '',
         links: {
@@ -100,7 +112,7 @@ function App() {
 
         <div>
           <label htmlFor='quote'>Quote: </label>
-          <input id='quote' name='quote' type='text' onChange={editQuoteForm} value={quoteForm.quote}/>
+          <input id='quote' name='quote' type='text' onChange={editCurrentQuote} value={currentQuote}/>
           <button onClick={addToQuotesArr}>Add to quotes</button>
         </div>
         
@@ -123,6 +135,10 @@ function App() {
         
         <button type='reset' onClick={clearForm}>Clear</button>
         <button type='submit' onClick={addQuote}>Submit</button>
+      </div>
+
+      <div>
+        View Quotes
       </div>
 
       <div>
