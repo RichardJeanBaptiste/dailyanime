@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import AddChar from './components/AddChar';
 import './App.css'
 
 /**
@@ -16,14 +17,8 @@ function App() {
   const [quoteForm, setQuoteForm] = useState({
     character: '',
     anime: '',
-    links: {
-      img1: '',
-      img2: '',
-      img3: ''
-    }
   });
 
-  
   const addQuote = async () => {
 
     let x = {
@@ -85,12 +80,26 @@ function App() {
     setQuoteForm({
         character: '',
         anime: '',
-        links: {
-          img1: '',
-          img2: '',
-          img3: ''
-        }
     })
+  }
+
+  const removeQuote = (quoteToDelete) => {
+    let x = [...quotesToAdd];
+
+    let result = x.filter((quote) => { return quote != quoteToDelete });
+
+    setAddQuotes(result);
+  }
+
+  const Quote = ({quote}) => {
+    return (
+      <li>
+        <div style={{display: 'flex', flexDirection: 'row'}}>
+          {quote}
+          <button onClick={() => removeQuote(quote)}>x</button>
+        </div>
+      </li>
+    )
   }
 
   return (
@@ -102,9 +111,7 @@ function App() {
           <ul>
             {quotesToAdd.map((x, index) => {
               return (
-                <li key={index}>
-                  {x}
-                </li>
+                <Quote quote={x} key={index}/>
               )
             })}
           </ul>
@@ -125,16 +132,13 @@ function App() {
           <label htmlFor='anime'>Anime: </label>
           <input id='anime' name='anime' type='text' onChange={editQuoteForm} value={quoteForm.anime}/>
         </div>
-
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <h5>Image Links</h5>
-          <input name='img1' type='text' onChange={editQuoteForm} value={quoteForm.links.img1}/>
-          <input name='img2' type='text' onChange={editQuoteForm} value={quoteForm.links.img2}/>
-          <input name='img3' type='text' onChange={editQuoteForm} value={quoteForm.links.img3}/>
-        </div>
         
         <button type='reset' onClick={clearForm}>Clear</button>
         <button type='submit' onClick={addQuote}>Submit</button>
+      </div>
+
+      <div>
+        <AddChar />
       </div>
 
       <div>
