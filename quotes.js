@@ -21,6 +21,22 @@ router.get('/quotes', async (req, res) => {
     }
 });
 
+router.get('/chars/:char', async (req,res) => {
+    try {
+        let searchQuery = `
+            SELECT * FROM characters
+            WHERE name = $1;
+        `;
+
+        const { rows } = await db.query(searchQuery,[req.params.char]);
+
+        res.json(rows[0])
+    } catch (error) {
+        console.error(error);
+        res.send("Something went wrong ");
+    }
+})
+
 router.get('/quotes/:char', async (req,res) => {
 
     let cString = req.params.char;
@@ -104,21 +120,14 @@ router.post('/add_char', async (req, res) => {
         RETURNING id;
     `;
 
-    const searchChar = `
-        SELECT name FROM characters
-        WHERE name = $1;
-    `;
-
     const name = req.body.name;
     const anime = req.body.anime;
     const info = req.body.info;
     const imgs = Object.values(req.body.img_links);
     
-    //console.log(imgs);
     try {
 
         const result = await db.query(insertChar, [name, anime, info, imgs]);
-        //console.log(result);
         res.status(201).json({message: "Added character to database"});
     } catch (error) {
 
