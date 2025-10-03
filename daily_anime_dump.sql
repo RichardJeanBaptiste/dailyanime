@@ -266,6 +266,12 @@ Ichigo	\N	Bleach	\N	3
 Jiraiya	\N	\N	\N	11
 Naruto	\N	\N	\N	12
 Urahara	\N	\N	\N	13
+Sosuke Aizen	\N	\N	\N	14
+4	\N	test_anime	{a,b,c}	20
+test	{a,b,c}	test_anime	\N	25
+test123	{sd,asd,zc}	mimac	\N	31
+test546	{1111,2222,333}	345	\N	32
+loopy	{901923,4124214,12412412}	acnionwaca	\N	33
 \.
 
 
@@ -295,6 +301,19 @@ Itachi	7	Hatred breeds more hatred. The chain of revenge never ends.	1
 Itachi	8	Those who forgive and accept pain grow stronger than those who cling to anger.	1
 Itachi	9	No matter what happens, you will always be my little brother. That will never change.	1
 Itachi	10	Sometimes, to protect what you love, you must become a villain in others' eyes.	1
+Sosuke Aizen	123	Fear is necessary for evolution. The fear that you might be destroyed will cause you to reach greater heights.	14
+Sosuke Aizen	124	Admiration is the furthest thing from understanding	14
+Sosuke Aizen	125	Laws exist only for those who cannot live without clinging to them	14
+Sosuke Aizen	126	To truly be free, you must abandon all notions of control and embrace your own will.	14
+Sosuke Aizen	127	People trust their eyes above all else. But what they see is often an illusion	14
+Sosuke Aizen	128	Do you believe that justice exists? Justice is nothing more than the consensus of the weak	14
+Sosuke Aizen	129	You thought you had won because you were stronger? Power is not the only thing that governs battle.	14
+Sosuke Aizen	130	I don’t have to fight you. You’ve already lost the moment you stepped into my world.	14
+Sosuke Aizen	131	In order to exist at the pinnacle, one must discard everything — even common sense	14
+Sosuke Aizen	132	A person who doesn’t know fear cannot hope to control power	14
+Sosuke Aizen	133	Illusions are the most powerful weapon. They shape the mind, and the mind shapes reality	14
+Sosuke Aizen	134	The moment you put faith in others, you place yourself under their control	14
+Sosuke Aizen	135	My blade doesn’t have to cut you. My words will do the work	14
 Itachi	18	We are humans, not fish. We don’t know what kind of people we truly are until the moment before our deaths. As death comes to embrace you, you will realize what you are. That’s what death is, don’t you think?	1
 Itachi	19	People live their lives bound by what they accept as correct and true... Their 'reality' may all be a mirage.	1
 Itachi	20	Knowledge and awareness are vague, and perhaps better called illusions.	1
@@ -333,6 +352,9 @@ Urahara	119	We’re all pawns in someone else’s game, until we learn how to pl
 Urahara	120	When you’re backed into a corner, that’s when you show your true strength.	13
 Urahara	121	There is no shame in falling down. The shame is in refusing to get back up.	13
 Urahara	122	The world isn’t kind. That’s why I chose to smile anyway	13
+Sosuke Aizen	136	You stand there because I allow you to. Nothing more	14
+Sosuke Aizen	137	The betrayal you feel is not betrayal at all. It was simply ignorance of the truth	14
+Sosuke Aizen	138	I do not fear death. What I fear is stagnation	14
 Ichigo	93	If you give me wings, I’ll soar for you. If you give me a sword, I’ll fight for you. If you give me a shield, I’ll protect you. But if you take away my friends, you’ll see what I truly am.	3
 Ichigo	94	If I don’t wield the sword, I can’t protect you. But if I keep wielding the sword, I can’t embrace you.	3
 Ichigo	95	If fate is a millstone, then we are the grist. There is nothing we can do. So I’ll fight fate.	3
@@ -417,7 +439,7 @@ SELECT pg_catalog.setval('public.admins_id_seq', 1, false);
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rich
 --
 
-SELECT pg_catalog.setval('public.characters_id_seq', 13, true);
+SELECT pg_catalog.setval('public.characters_id_seq', 33, true);
 
 
 --
@@ -438,7 +460,7 @@ SELECT pg_catalog.setval('public.news_id_seq', 1, false);
 -- Name: quotes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rich
 --
 
-SELECT pg_catalog.setval('public.quotes_id_seq', 122, true);
+SELECT pg_catalog.setval('public.quotes_id_seq', 138, true);
 
 
 --

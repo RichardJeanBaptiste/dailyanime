@@ -12,7 +12,7 @@ module.exports = {
 };
 
 /**
- * pg_dump -h localhost -U your_username -d daily_anime > daily_anime_dump.sql
+ * pg_dump -h localhost -U rich -d daily_anime > daily_anime_dump.sql
  * 
  * createdb -h new_host -U new_username daily_anime
  * 

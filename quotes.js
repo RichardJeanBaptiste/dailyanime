@@ -30,7 +30,11 @@ router.get('/chars/:char', async (req,res) => {
 
         const { rows } = await db.query(searchQuery,[req.params.char]);
 
-        res.json(rows[0])
+        if(rows.length < 1){
+            res.json([]);
+        } else {
+            res.json(rows[0])
+        }
     } catch (error) {
         console.error(error);
         res.send("Something went wrong ");
@@ -140,6 +144,16 @@ router.post('/add_char', async (req, res) => {
         }  
         
         res.send("Something went wrong ")
+    }
+})
+
+router.post('/edit_char', async (req, res) => {
+    try {
+        console.log(req.body)
+        res.send("Edit Char Route")
+    } catch (error) {
+        console.error(error);
+        res.send("Something went wrong")
     }
 })
 
