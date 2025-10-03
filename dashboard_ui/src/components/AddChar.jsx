@@ -46,8 +46,23 @@ function AddChar() {
         })
     }
 
-    const handleSumbit = () => {
-        console.log(charForm);
+    const handleSumbit = async () => {
+
+        const query = await fetch('http://localhost:3000/api/add_char', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(charForm)
+        })
+
+        //console.log(query);
+
+        if(query.status == 201){
+            alert("Character Added");
+        } else {
+            alert("Something went wrong :(");
+        }   
     }
     
     return (

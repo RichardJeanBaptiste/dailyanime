@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import AddChar from './components/AddChar';
+import EditChar from './components/EditChar';
 import './App.css'
 
 /**
@@ -26,7 +27,7 @@ function App() {
       ...quoteForm,
     }
     
-    const query = await fetch('http://localhost:3000/add_quote', {
+    const query = await fetch('http://localhost:3000/api/add_quote', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -138,7 +139,11 @@ function App() {
       </div>
 
       <div>
-        <AddChar />
+        <AddChar/>
+      </div>
+
+      <div>
+        <EditChar/>  
       </div>
 
       <div>
