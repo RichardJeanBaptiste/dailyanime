@@ -8,9 +8,9 @@ function EditChar() {
         anime: '',
         info: {},
         img_links : {
-            img1: '',
-            img2: '',
-            img3: ''
+            image1: '',
+            image2: '',
+            image3: ''
         }
     });
     
@@ -25,28 +25,39 @@ function EditChar() {
         })
         .then((response) => response.json())
         .then((data) => {
-            console.log(data);
 
             if(data.length == 0) {
                 alert("Character Not Found");
                 return;
             }
+            
+            let images = {
+                image1: '',
+                image2: '',
+                image3: ''
+            };
 
+            if(data.img_links != null){
+                data.img_links.forEach((link, index) => {
+                    const key = `image${index + 1}`;
+                    images[key] = link
+                })
+            }
+
+        
             setInitInfo({
                 name: data.name,
                 anime: data.anime,
                 info: {},
-                img_links: data.img_links
+                img_links: images
             })
 
             setCharInfo({
                 name: data.name,
                 anime: data.anime,
                 info: {},
-                img_links: data.img_links
+                img_links: images
             })
-
-
         })
     }
 
@@ -56,12 +67,12 @@ function EditChar() {
 
     const editCharInfo = (e) => {
         const { name, value } = e.target;
-        if(name.startsWith("img")){
+        if(name.startsWith("image")){
             setCharInfo(prevState => ({
                 ...prevState,
                 img_links: {
-                ...prevState.img_links,
-                [name]: value
+                    ...prevState.img_links,
+                    [name]: value
                 }
             }))
         } else {
@@ -89,8 +100,30 @@ function EditChar() {
         setCharInfo(x);
     }
 
-    const handleSubmit = () => {
-        
+    const handleSubmit = async () => {
+
+        const mergedInfo = {
+            ...initInfo,
+            ...charInfo,
+        }
+
+        console.log(mergedInfo);
+
+        const query = await fetch(('http://localhost:3000/api/edit_char'), {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify(mergedInfo),
+        });
+
+        console.log(query);
+
+        if(query.status == 201){
+            alert("Character Edited");
+        } else {
+            alert("Something went wrong :(");
+        }  
     }
 
     return (
@@ -114,22 +147,22 @@ function EditChar() {
                 {charInfo?.img_links && Object.values(charInfo.img_links).length > 0 ? (
                     Object.values(charInfo.img_links).map((x, index) => (
                         <div key={index}>
-                            <label htmlFor={index}>Image{index + 1}:</label>
-                            <input  placeholder={x} name={index} onChange={editCharInfo}/>
+                            <label htmlFor={`image${index + 1}`}>Image{index + 1}:</label>
+                            <input  placeholder={x} name={`image${index + 1}`} onChange={editCharInfo}/>
                         </div>
                     ))
                 ) : (
                     <div style={{display: 'flex', flexDirection: 'column' }}>
                         <p> No images available</p>
 
-                        <label htmlFor='0'>Image1 : </label>
-                        <input name='0' placeholder='Enter Img Link'/>
+                        <label htmlFor='image1'>Image1 : </label>
+                        <input name='image1' placeholder='Enter Img Link' onChange={editCharInfo}/>
 
-                        <label htmlFor='1'>Image2 : </label>
-                        <input name='1' placeholder='Enter Img Link'/>
+                        <label htmlFor='image2'>Image2 : </label>
+                        <input name='image2' placeholder='Enter Img Link' onChange={editCharInfo}/>
 
-                        <label htmlFor='2'>Image3 : </label>
-                        <input name='2' placeholder='Enter Img Link'/>
+                        <label htmlFor='image3'>Image3 : </label>
+                        <input name='image3' placeholder='Enter Img Link' onChange={editCharInfo}/>
                     </div>   
                 )}
             </ul>
