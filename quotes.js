@@ -2,11 +2,6 @@ const express = require('express')
 const router = express.Router()
 const db = require('./db')
 
-/**
- * 
- *  EDIT CHARACTER ROUTE
- * 
- */
 
 router.get('/', (req,res) => {
     res.send("Home Router")
@@ -149,8 +144,29 @@ router.post('/add_char', async (req, res) => {
 
 router.post('/edit_char', async (req, res) => {
     try {
-        console.log(req.body)
-        res.send("Edit Char Route")
+    
+        const name = req.body.name;
+        const anime = req.body.anime;
+        const info = [];
+        const img_links = Object.values(req.body.img_links);
+        const charid = req.body.id;
+
+        const updateQuery = `
+            UPDATE characters 
+            SET name = $1,
+                anime = $2,
+                info = $3,
+                img_links = $4
+            WHERE id = $5;
+        `;
+
+        const result = await db.query(updateQuery,[name,anime,info,img_links,charid]);
+        console.log(result);
+        if(result.rowCount == 0) {
+            res.status(404).json({message: "Character Not Found"});
+        } else {
+            res.status(201).json({message: "Character profile updated"});
+        }
     } catch (error) {
         console.error(error);
         res.send("Something went wrong")

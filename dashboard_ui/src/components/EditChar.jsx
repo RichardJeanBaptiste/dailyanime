@@ -11,7 +11,8 @@ function EditChar() {
             image1: '',
             image2: '',
             image3: ''
-        }
+        },
+        id: ''
     });
     
     const [initInfo, setInitInfo] = useState({})
@@ -25,6 +26,8 @@ function EditChar() {
         })
         .then((response) => response.json())
         .then((data) => {
+
+            console.log(data.id);
 
             if(data.length == 0) {
                 alert("Character Not Found");
@@ -49,14 +52,16 @@ function EditChar() {
                 name: data.name,
                 anime: data.anime,
                 info: {},
-                img_links: images
+                img_links: images,
+                id: data.id
             })
 
             setCharInfo({
                 name: data.name,
                 anime: data.anime,
                 info: {},
-                img_links: images
+                img_links: images,
+                id: data.id
             })
         })
     }
