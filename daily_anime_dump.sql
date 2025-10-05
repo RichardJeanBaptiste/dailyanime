@@ -260,8 +260,6 @@ COPY public.admins (username, password, id) FROM stdin;
 --
 
 COPY public.characters (name, img_links, anime, info, id) FROM stdin;
-Itachi	{https://upload.wikimedia.org/wikipedia/en/e/e5/Itachi_Uchiha.jpg,https://static.wikia.nocookie.net/naruto/images/5/53/Itachi_Using_Genjutsu.png/revision/latest/scale-to-width-down/985?cb=20150917075124,"https://res.cloudinary.com/jerrick/image/upload/c_scale,f_jpg,q_auto/64202805dcfea1001d0b7a1a.jpg"}	Naruto	\N	1
-Pain	\N	Naruto	\N	2
 Ichigo	\N	Bleach	\N	3
 Jiraiya	\N	\N	\N	11
 Naruto	\N	\N	\N	12
@@ -271,7 +269,12 @@ Sosuke Aizen	\N	\N	\N	14
 test	{a,b,c}	test_anime	\N	25
 test123	{sd,asd,zc}	mimac	\N	31
 test546	{1111,2222,333}	345	\N	32
-loopy	{901923,4124214,12412412}	acnionwaca	\N	33
+Nagato	{https://upload.wikimedia.org/wikipedia/en/a/a0/NagatoNaruto.png,https://cdn.shopify.com/s/files/1/0785/4004/6646/files/fa9918db3acac38b8c751e3851a7cb9a_480x480.jpg?v=1727098560,https://upload.wikimedia.org/wikipedia/en/f/f5/SixPathsofPain.png}	Naruto	{}	2
+loopie8n9889hn	{a,b,c}	loopy_anime	{}	33
+Itachi Uchiha	{https://upload.wikimedia.org/wikipedia/en/e/e5/Itachi_Uchiha.jpg,https://static.wikia.nocookie.net/naruto/images/5/53/Itachi_Using_Genjutsu.png/revision/latest/scale-to-width-down/985?cb=20150917075124,"https://res.cloudinary.com/jerrick/image/upload/c_scale,f_jpg,q_auto/64202805dcfea1001d0b7a1a.jpg"}	Naruto	{}	1
+Kakashi Hatake	\N	\N	\N	34
+Orochimaru	\N	\N	\N	35
+Edward Elrich	{https://static.wikia.nocookie.net/fma/images/b/b4/EdwardManga.png/revision/latest?cb=20250220063707,https://static.wikia.nocookie.net/fma/images/b/bc/Edward09.png/revision/latest?cb=20201016012253,https://static.wikitide.net/greatcharacterswiki/thumb/0/05/Ed_prof.png/800px-Ed_prof.png}	Full Metal Alchemist	\N	36
 \.
 
 
@@ -413,6 +416,71 @@ Urahara	110	Battle is not about brute strength. It’s about strategy, timing, a
 Urahara	111	If you let your guard down because your opponent is weak, you might not live to see your mistake	13
 Urahara	112	There’s no need for overconfidence. Even the smallest rock can shatter the strongest glass	13
 Urahara	113	The one who can think two steps ahead wins. That’s the essence of combat	13
+Kakashi Hatake	139	Those who break the rules are scum… but those who abandon their friends are worse than scum	34
+Kakashi Hatake	140	In society, those who don’t have many abilities tend to complain more.	34
+Kakashi Hatake	141	Forget about revenge. The fate of those who seek revenge is grim	34
+Kakashi Hatake	142	You can’t open up the mind to the future if you’re stuck thinking about the past.	34
+Kakashi Hatake	143	Sometimes, you must adapt to the situation rather than force it to go your way.	34
+Kakashi Hatake	144	To know what is right and choose to ignore it is the act of a coward	34
+Kakashi Hatake	145	It’s not the face that makes someone a monster; it’s the choices they make with their lives	34
+Kakashi Hatake	146	When people get hurt, they learn to hate. When people hurt others, they become hated and are tormented by guilt. But knowing that pain allows people to be kind	34
+Kakashi Hatake	147	The next generation will always surpass the previous one. It’s one of the never-ending cycles in life	34
+Kakashi Hatake	148	As long as you don’t give up, you can still be saved.	34
+Kakashi Hatake	149	When you’re protecting something truly precious, you truly can become as strong as you need to be.	34
+Kakashi Hatake	150	Teamwork means trusting your comrades and letting them trust you.	34
+Kakashi Hatake	151	The people I care about are always targeted first. That’s why I fight with everything I have to protect them	34
+Kakashi Hatake	152	Even if everyone I care about dies, as long as I protect their memory, they’ll never truly be gone	34
+Kakashi Hatake	153	It’s okay to cry sometimes. It’s proof that your heart still feels.	34
+Kakashi Hatake	154	No matter how hard you try, you can’t erase the past. But you can learn from it.	34
+Kakashi Hatake	155	Living with guilt isn’t easy, but it’s better than running from it	34
+Kakashi Hatake	156	I’ve seen enough war to know that peace is fragile. But it’s worth protecting	34
+Kakashi Hatake	157	Sometimes, the best way to help is to step aside and let the next generation lead	34
+Kakashi Hatake	158	The world will always need heroes, but the kind who know when not to fight	34
+Kakashi Hatake	159	When you get older, you realize… strength alone doesn’t make you wise	34
+Orochimaru	160	It’s human nature not to realize the true value of something unless they lose it	35
+Orochimaru	161	There probably isn’t any meaning in life. Perhaps you can find something interesting to do while you’re alive	35
+Orochimaru	162	The desire to know everything… that is the essence of being human	35
+Orochimaru	163	True power is not willpower, but the ability to change	35
+Orochimaru	164	Knowledge and understanding are the ultimate weapons.	35
+Orochimaru	165	People change. But it’s the craving for knowledge that never fades.	35
+Orochimaru	166	Those who cannot change themselves cannot change anything.	35
+Orochimaru	167	Every experiment teaches me something new — even failure is a form of progress.	35
+Orochimaru	168	You can’t gain anything new without losing something first	35
+Orochimaru	169	No matter how hard humans try to be righteous, they’ll always crave power.	35
+Orochimaru	170	I’ve seen what happens when emotions control a person — chaos.	35
+Orochimaru	171	The world rejects those who are different. I just stopped caring about their rejection.	35
+Orochimaru	172	Power is not evil in itself. How you use it determines everything.	35
+Orochimaru	173	A snake that cannot shed its skin will die.	35
+Orochimaru	174	Even pain can be a teacher — if you listen	35
+Orochimaru	175	Perhaps immortality isn’t about living forever, but being remembered through those who succeed you.	35
+Orochimaru	176	Children are the vessels of the future. It’s our duty to guide them, not to control them.	35
+Orochimaru	177	Even snakes can grow old and shed their hatred	35
+Orochimaru	178	You can’t rewrite the past, but you can change how the story continues.	35
+Orochimaru	179	Those who seek perfection must embrace imperfection first.	35
+Edward Elrich	180	A lesson without pain is meaningless. That’s because you can’t gain something without sacrificing something in return.	36
+Edward Elrich	181	Humankind cannot gain anything without first giving something in return. To obtain, something of equal value must be lost.	36
+Edward Elrich	182	Alchemy is the science of understanding, deconstructing, and reconstructing matter. But even it can’t fix a broken heart.	36
+Edward Elrich	183	There’s no such thing as a painless lesson. They just don’t exist	36
+Edward Elrich	184	The world isn’t perfect, but it’s there for us trying the best it can… that’s what makes it so beautiful.	36
+Edward Elrich	185	We can’t ask for someone else to forgive us. We have to forgive ourselves	36
+Edward Elrich	186	The laws of equivalent exchange aren’t about gain and loss. They’re about understanding what truly matters.	36
+Edward Elrich	187	The more you know, the more you realize how much you don’t.	36
+Edward Elrich	188	Even when our eyes are closed, there’s a whole world out there that lives outside ourselves and our dreams.	36
+Edward Elrich	189	No matter how hopeless things seem, they’re never truly hopeless.	36
+Edward Elrich	190	Giving up is worse than failing	36
+Edward Elrich	191	A king without his people is no king at all	36
+Edward Elrich	192	Stand up and walk. Keep moving forward. You’ve got two good legs, so get up and use them.	36
+Edward Elrich	193	You’ve got to figure out how much you’re willing to risk for the thing you want most	36
+Edward Elrich	194	No matter how cruel the world may be, we’ll fight to make it better	36
+Edward Elrich	195	Family isn’t blood — it’s the people who stand by you no matter what	36
+Edward Elrich	196	When you care about someone, you protect them. That’s all there is to it	36
+Edward Elrich	197	Who even decides what’s right and wrong?	36
+Edward Elrich	198	If you want to play god, you better be ready to face the consequences.	36
+Edward Elrich	199	The world runs on cause and effect — but people can still choose how they act.	36
+Edward Elrich	200	No matter how much knowledge you have, it’s meaningless if you don’t use it to help others	36
+Edward Elrich	201	To deny our limits is to deny our humanity.	36
+Edward Elrich	202	The moment you stop questioning your actions is when you become a monster.	36
+Edward Elrich	203	If you can’t make the world better, then at least don’t make it worse	36
 \.
 
 
@@ -439,7 +507,7 @@ SELECT pg_catalog.setval('public.admins_id_seq', 1, false);
 -- Name: characters_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rich
 --
 
-SELECT pg_catalog.setval('public.characters_id_seq', 33, true);
+SELECT pg_catalog.setval('public.characters_id_seq', 36, true);
 
 
 --
@@ -460,7 +528,7 @@ SELECT pg_catalog.setval('public.news_id_seq', 1, false);
 -- Name: quotes_id_seq; Type: SEQUENCE SET; Schema: public; Owner: rich
 --
 
-SELECT pg_catalog.setval('public.quotes_id_seq', 138, true);
+SELECT pg_catalog.setval('public.quotes_id_seq', 203, true);
 
 
 --

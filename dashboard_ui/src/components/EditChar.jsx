@@ -112,7 +112,7 @@ function EditChar() {
             ...charInfo,
         }
 
-        console.log(mergedInfo);
+        //console.log(mergedInfo);
 
         const query = await fetch(('http://localhost:3000/api/edit_char'), {
             method: 'POST',
