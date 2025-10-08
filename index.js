@@ -6,6 +6,7 @@ const path = require('path')
 const bodyParser = require('body-parser')
 const port = 3000
 const quoteApi = require('./quotes')
+const loginRoutes = require('./login')
 
 
 require('dotenv').config()
@@ -20,6 +21,9 @@ app.get('/', async (req,res) => {
 })
 
 app.use('/api', quoteApi)
+
+app.use('/login', loginRoutes)
+
 
 app.listen(port, () => {
     console.log(`Listening on port:${port}`)
