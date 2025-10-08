@@ -1,4 +1,83 @@
 .env
 node_modules
 
+# React Native build files
+
+OSX
+.DS_Store
+.metadata_never_index
+
+Build artifacts
+build/
+DerivedData
+*.ipa
+
+User state/configuration files
+xcuserdata
+*.pbxuser
+!default.pbxuser
+*.mode1v3
+!default.mode1v3
+*.mode2v3
+!default.mode2v3
+*.perspectivev3
+!default.perspectivev3
+*.xccheckout
+*.moved-aside
+*.hmap
+*.xcuserstate
+**/.xcode.env.local
+
+Ruby / CocoaPods
+**/Pods/
+/vendor/bundle/
+
+
+Build artifacts
+build/
+.cxx/
+
+IDE files
+.idea
+.gradle
+*.iml
+.kotlin/
+
+Keys and local configuration
+local.properties
+*.keystore
+!debug.keystore
+
+Java memory dumps
+*.hprof
+
+
+node_modules/
+npm-debug.log
+yarn-error.log
+
+Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
+
+Bundle artifact
+*.jsbundle
+
+Testing output
+/coverage
+
+
+Avoid storing large generated files like reports and screenshots
+**/fastlane/report.xml
+**/fastlane/Preview.html
+**/fastlane/screenshots
+**/fastlane/test_output
+
+
+Ignore everything in .yarn/ except essential files
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
