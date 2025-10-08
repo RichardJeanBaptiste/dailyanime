@@ -10,6 +10,7 @@ const quoteApi = require('./quotes')
 
 require('dotenv').config()
 
+
 app.use(bodyParser.urlencoded())
 app.use(bodyParser.json())
 app.use(cors())

@@ -7,6 +7,7 @@ function EditChar() {
         name: '',
         anime: '',
         info: {},
+        biography: '',
         img_links : {
             image1: '',
             image2: '',
@@ -26,8 +27,6 @@ function EditChar() {
         })
         .then((response) => response.json())
         .then((data) => {
-
-            console.log(data.id);
 
             if(data.length == 0) {
                 alert("Character Not Found");
@@ -94,6 +93,7 @@ function EditChar() {
             name: '',
             anime: '',
             info: {},
+            biography: '',
             img_links: {}
         });
 
@@ -112,8 +112,6 @@ function EditChar() {
             ...charInfo,
         }
 
-        //console.log(mergedInfo);
-
         const query = await fetch(('http://localhost:3000/api/edit_char'), {
             method: 'POST',
             headers: {
@@ -122,7 +120,6 @@ function EditChar() {
             body:JSON.stringify(mergedInfo),
         });
 
-        console.log(query);
 
         if(query.status == 201){
             alert("Character Edited");
@@ -138,7 +135,6 @@ function EditChar() {
                 <input type='text' value={searchChar} onChange={handleInputChange}/>
                 <button onClick={getInfo}>Search</button>
             </div>
-            <button onClick={() => console.log(charInfo)}>Test</button>
             <br/>
             <div style={{display: 'flex', flexDirection:'column'}}>
                 <label htmlFor='name'>Name:</label>

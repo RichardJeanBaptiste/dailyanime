@@ -12,6 +12,7 @@ router.get('/quotes', async (req, res) => {
         const { rows } = await db.query('SELECT * FROM quotes');
         res.json(rows);
     } catch (error) {
+        console.error(error);
         res.send("Sorry something went wrong on our end :( ")
     }
 });
@@ -114,7 +115,7 @@ router.post('/add_quote', async (req, res) => {
 router.post('/add_char', async (req, res) => {
 
     const insertChar = `
-        INSERT INTO characters(name, anime, info, img_links)
+        INSERT INTO characters(name, anime, biography, img_links)
         VALUES ($1, $2, $3, $4)
         RETURNING id;
     `;
@@ -122,11 +123,12 @@ router.post('/add_char', async (req, res) => {
     const name = req.body.name;
     const anime = req.body.anime;
     const info = req.body.info;
+    const bio = req.body.bio;
     const imgs = Object.values(req.body.img_links);
     
     try {
 
-        const result = await db.query(insertChar, [name, anime, info, imgs]);
+        const result = await db.query(insertChar, [name, anime, bio, imgs]);
         res.status(201).json({message: "Added character to database"});
     } catch (error) {
 

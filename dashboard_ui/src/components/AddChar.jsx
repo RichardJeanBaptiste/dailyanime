@@ -56,10 +56,10 @@ function AddChar() {
             body:JSON.stringify(charForm)
         })
 
-        //console.log(query);
 
         if(query.status == 201){
             alert("Character Added");
+            handleFormClear();
         } else {
             alert("Something went wrong :(");
         }   
