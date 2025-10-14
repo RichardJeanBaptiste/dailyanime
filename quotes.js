@@ -17,6 +17,24 @@ router.get('/quotes', async (req, res) => {
     }
 });
 
+router.get('/quotes/random', async (req,res) => {
+    try {
+
+        const randomQuote = `
+            SELECT * FROM characters 
+            FULL JOIN quotes ON characters.id=quotes.charid
+            ORDER BY RANDOM()
+            LIMIT 1;
+        `;
+        
+        const { rows } = await db.query(randomQuote);
+        res.json(rows);
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({message: 'Something went wrong'});
+    }
+})
+
 router.get('/chars/:char', async (req,res) => {
     try {
         let searchQuery = `
