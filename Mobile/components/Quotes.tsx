@@ -1,18 +1,83 @@
-import { useEffect } from 'react';
-import {StyleSheet, View, Text, Image} from 'react-native';
+import { useEffect, useState } from 'react';
+import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
 
 function Quotes() {
+
+    const [currentQuote, setCurrentQuote] = useState({
+        name: 'char_name',
+        anime: 'char_anime',
+        img_links: [],
+        quote: 'random_quote',
+    })
+
+    useEffect(() => {
+         const fetchQuote = async () => {
+            try {
+                const response = await fetch("http://10.0.2.2:3000/api/quotes/random", {
+                method: 'GET',
+                });
+
+                if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                //console.log('Fetched data:', data);
+
+                setCurrentQuote({
+                    name: data[0].name || 'Unknown',
+                    anime: data[0].anime || 'Unknown Anime',
+                    img_links: data[0].img_links || [],
+                    quote: data[0].quote || 'No quote available.',
+                });
+            } catch (error) {
+                console.error('Error fetching quote:', error);
+            }
+        };
+        fetchQuote();
+    },[]);
+
+    const getQuote = async () => {
+
+       try {
+            const response = await fetch("http://10.0.2.2:3000/api/quotes/random", {
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Fetched data:', data);
+
+            setCurrentQuote({
+                name: data[0].name || 'Unknown',
+                anime: data[0].anime || 'Unknown Anime',
+                img_links: data[0].img_links || [],
+                quote: data[0].quote || 'No quote available.',
+            });
+        } catch (error) {
+            console.error('Error fetching quote:', error);
+        }
+    }
+    
     return (
         <View style={styles.quote_root}>
             <View style={styles.quote_title}>
-                <Image
-                    style={styles.quote_img}
-                    source={require('../components/a_prof.jpg')}
-                />
+                <Pressable style={{flex: 0.1}} onPress={getQuote}>
+                    <Image
+                        style={styles.quote_img}
+                        source={{
+                            uri: currentQuote.img_links[0]
+                        }}
+                    />
+                </Pressable>
+                
 
-                <View style={{ flex: 0.7, aspectRatio: 1, marginLeft: '5%' }}>
-                    <Text>Char Name</Text>
-                    <Text>Char Anime</Text>
+                <View style={{ flex: 0.7, aspectRatio: 1, marginLeft: '12%' }}>
+                    <Text style={{ fontSize: 22, fontWeight: 'bold' }}>{currentQuote.name}</Text>
+                    <Text style={{ fontSize: 16 }}>{currentQuote.anime}</Text>
                 </View>
              </View>
 
@@ -20,13 +85,7 @@ function Quotes() {
             <View style={styles.quote_container}>
                 <View style={styles.divider}/>
                 <Text style={styles.quote_text}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Integer at diam ut velit semper placerat ac non mi. Nam venenatis lacus ligula, at aliquam quam finibus faucibus. Mauris et condimentum ante. 
-                    Donec commodo eros non tristique blandit. Aenean tellus justo, luctus vel sapien id, tincidunt cursus lectus. Cras convallis ultricies nunc, sit amet consequat nulla.
-                     Nulla vitae sapien id orci euismod ornare ut in ex. Integer ullamcorper est sit amet ipsum luctus molestie. Etiam blandit dui eu pretium sollicitudin. 
-                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at lectus tincidunt, ornare augue eu, fringilla orci. 
-                     Aenean lacus tortor, accumsan vehicula libero quis, ultricies vulputate neque. 
-                    Praesent eu euismod eros. Morbi iaculis efficitur nunc sit amet mollis.
+                    {currentQuote.quote}
                 </Text>
             </View>
         </View>
@@ -49,10 +108,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10
     },
     quote_img : {
-        width: 50,
-        height: 50,
-        flex: 0.1,
-        borderRadius: 30
+        width: 70,
+        height: 70,
+        borderRadius: 35
     },
     divider: {
         backgroundColor: 'black',
@@ -68,10 +126,10 @@ const styles = StyleSheet.create({
         height: '85%'
     },
     quote_text: {
-        width: '95%',
+        width: '90%',
         marginTop: '7%',
         textAlign: 'center',
-        fontSize: 21
+        fontSize: 30
     }
 })
 
