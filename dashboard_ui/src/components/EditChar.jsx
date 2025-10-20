@@ -1,19 +1,19 @@
 /* eslint-disable no-unused-vars */
 import { useState } from 'react';
+import { supabase } from '../utils';
 
 function EditChar() {
    
     const [charInfo, setCharInfo] = useState({
         name: '',
         anime: '',
-        info: {},
         biography: '',
         img_links : {
             image1: '',
             image2: '',
             image3: ''
         },
-        id: ''
+        charid: ''
     });
     
     const [initInfo, setInitInfo] = useState({})
@@ -21,48 +21,55 @@ function EditChar() {
     const [searchChar, setSearchChar] = useState("");
 
     const getInfo = async () => {
-        
-        await fetch(`http://localhost:3000/api/chars/${searchChar}`, {
-            method: 'GET',
-        })
-        .then((response) => response.json())
-        .then((data) => {
 
-            if(data.length == 0) {
-                alert("Character Not Found");
-                return;
+        //console.log(charInfo.name)
+        
+        const { data, error } = await supabase
+            .from('characters')
+            .select()
+            .eq('name', searchChar)
+
+        if(error) {
+            console.log(error)
+        } else {
+   
+            let imgs = data[0].img_links;
+
+            let x = {}
+            
+            if(imgs == null) {
+                x = {
+                    image1: '',
+                    image2: '',
+                    image3: ''
+                }
+            } else {
+                for(let i = 0; i < imgs.length; i++) {
+                    let y = `image${i + 1}`
+                    x={ ...x, [y]: imgs[i]}
+                }
             }
             
-            let images = {
-                image1: '',
-                image2: '',
-                image3: ''
-            };
-
-            if(data.img_links != null){
-                data.img_links.forEach((link, index) => {
-                    const key = `image${index + 1}`;
-                    images[key] = link
-                })
-            }
-
         
             setInitInfo({
-                name: data.name,
-                anime: data.anime,
-                info: {},
-                img_links: images,
-                id: data.id
+                name: data[0].name || '',
+                anime: data[0].anime || '',
+                biography: data[0].biography || '',
+                img_links: x,
+                charid: data[0].charid
             })
 
             setCharInfo({
-                name: data.name,
-                anime: data.anime,
-                info: {},
-                img_links: images,
-                id: data.id
+                name: data[0].name || '',
+                anime: data[0].anime || '',
+                biography: data[0].biography || '',
+                img_links: x,
+                charid: data[0].charid
             })
-        })
+
+            //console.log(charInfo)
+        }
+
     }
 
     const handleInputChange = (e) => {
@@ -92,9 +99,9 @@ function EditChar() {
         setCharInfo({
             name: '',
             anime: '',
-            info: {},
             biography: '',
-            img_links: {}
+            img_links: {},
+            charid: ''
         });
 
         setSearchChar("");
@@ -107,25 +114,22 @@ function EditChar() {
 
     const handleSubmit = async () => {
 
-        const mergedInfo = {
-            ...initInfo,
-            ...charInfo,
+        console.log(charInfo)
+
+        const { error } = await supabase
+            .from('characters')
+            .update({
+                name: charInfo.name,
+                anime: charInfo.anime,
+                biography: charInfo.biography,
+                img_links: Object.values(charInfo.img_links)
+            })
+            .eq('charid', charInfo.charid)
+
+
+        if(error) {
+            console.log(error)
         }
-
-        const query = await fetch(('http://localhost:3000/api/edit_char'), {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(mergedInfo),
-        });
-
-
-        if(query.status == 201){
-            alert("Character Edited");
-        } else {
-            alert("Something went wrong :(");
-        }  
     }
 
     return (
@@ -136,14 +140,23 @@ function EditChar() {
                 <button onClick={getInfo}>Search</button>
             </div>
             <br/>
+
             <div style={{display: 'flex', flexDirection:'column'}}>
                 <label htmlFor='name'>Name:</label>
                 <input type='text' name="name" value={charInfo.name} onChange={editCharInfo}/>
 
                 <label htmlFor='anime'>Anime:</label>
                 <input type='text' name="anime" value={charInfo.anime} onChange={editCharInfo}/>
+
+                <label htmlFor='biography'>Biography:</label>
+                <textarea 
+                    placeholder='Enter Bio' id="biography" name="biography" 
+                    rows={4} cols={50} onChange={editCharInfo}
+                    value={charInfo.biography}
+                ></textarea>
             </div>
-            
+
+            <br/>
             <ul>
                 {charInfo?.img_links && Object.values(charInfo.img_links).length > 0 ? (
                     Object.values(charInfo.img_links).map((x, index) => (

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { supabase } from '../utils';
 
 function AddQuotes() {
     const [ currentQuote, setCurrentQuote ] = useState("")
@@ -10,28 +11,43 @@ function AddQuotes() {
     });
 
     const addQuote = async () => {
-        let x = {
-            quotes: quotesToAdd,
-            ...quoteForm,
+        /**
+         * Get CharID
+         * loop through quotes
+         *      create Array -> [{id: charid, quote: 'quote'}, {...}]
+         */
+        
+        let currentId;
+        let temp;
+        let dataToInsert = [];
+
+        //console.log(quoteForm.character)
+        
+        const { data, error } = await supabase
+            .from('characters')
+            .select()
+            .eq('name', quoteForm.character)
+        
+        if(error) {
+            console.log(error);
+        } else {
+            currentId = data[0].charid;
+            console.log(data)
+        }
+
+        for(let i = 0; i < quotesToAdd.length; i++){
+            temp = {character: quoteForm.character, quote: quotesToAdd[i], charid: currentId}
+            dataToInsert.push(temp)
+        }
+
+        const { insertError } = await supabase
+            .from('quotes')
+            .insert(dataToInsert)
+
+        if(insertError) {
+            console.log(insertError)
         }
         
-        const query = await fetch('http://localhost:3000/api/add_quote', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(x),
-        });
-
-        console.log(quoteForm);
-        console.log(query);
-
-        if(query.status == 201){
-            alert("Quote Added");
-            clearForm();
-        } else {
-            alert("Something went wrong :(");
-        }    
     };
 
     const addToQuotesArr = () => {
@@ -84,12 +100,12 @@ function AddQuotes() {
 
     const Quote = ({quote}) => {
         return (
-        <li>
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-            {quote}
-            <button onClick={() => removeQuote(quote)}>x</button>
-            </div>
-        </li>
+            <li>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                {quote}
+                <button onClick={() => removeQuote(quote)}>x</button>
+                </div>
+            </li>
         )
     }
     

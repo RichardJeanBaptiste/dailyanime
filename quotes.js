@@ -1,6 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const db = require('./db')
+//const db = require('./db')
+//const supabase = require('./db')
+
+const { createClient } = require('@supabase/supabase-js');
+const dotenv = require('dotenv');
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
 
 router.get('/', (req,res) => {
@@ -9,26 +14,36 @@ router.get('/', (req,res) => {
 
 router.get('/quotes', async (req, res) => {
     try {
-        const { rows } = await db.query('SELECT * FROM quotes');
-        res.json(rows);
+        
+        const { data, error } = await supabase.from('quotes').select('*');
+
+        if (error) {
+            console.error('Error fetching data:', error);
+            res.send('Something went wrong getting that data for you :(')
+        }
+
+        res.json(data)
     } catch (error) {
         console.error(error);
         res.send("Sorry something went wrong on our end :( ")
     }
 });
 
+
 router.get('/quotes/random', async (req,res) => {
     try {
 
-        const randomQuote = `
-            SELECT * FROM characters 
-            FULL JOIN quotes ON characters.id=quotes.charid
-            ORDER BY RANDOM()
-            LIMIT 1;
-        `;
+       
+        const { data, error } = await supabase.rpc('all_chars')
+
+        if (error) {
+            console.log(error)
+            res.send("ABC")
+        } else {
+            res.json(data);
+        }
+
         
-        const { rows } = await db.query(randomQuote);
-        res.json(rows);
     } catch (error) {
         console.error(error)
         res.status(500).json({message: 'Something went wrong'});
@@ -167,25 +182,28 @@ router.post('/edit_char', async (req, res) => {
     
         const name = req.body.name;
         const anime = req.body.anime;
-        const info = [];
+        const bio = req.body.biography;
         const img_links = Object.values(req.body.img_links);
         const charid = req.body.id;
+
 
         const updateQuery = `
             UPDATE characters 
             SET name = $1,
                 anime = $2,
-                info = $3,
+                biography = $3,
                 img_links = $4
             WHERE id = $5;
         `;
 
-        const result = await db.query(updateQuery,[name,anime,info,img_links,charid]);
-        console.log(result);
+
+        const result = await db.query(updateQuery,[name,anime,bio,img_links,charid]);
+        //console.log(result);
         if(result.rowCount == 0) {
             res.status(404).json({message: "Character Not Found"});
         } else {
             res.status(201).json({message: "Character profile updated"});
+        
         }
     } catch (error) {
         console.error(error);

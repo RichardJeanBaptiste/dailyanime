@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { supabase } from '../utils';
 
 
 function AddChar() {
@@ -6,7 +7,7 @@ function AddChar() {
     const [charForm, setCharForm] = useState({
         name: '',
         anime: '',
-        bio: '',
+        biography: '',
         img_links: {
             link1: '',
             link2: '',
@@ -37,7 +38,7 @@ function AddChar() {
         setCharForm({
             name: '',
             anime: '',
-            bio: '',
+            biography: '',
             img_links: {
                 link1: '',
                 link2: '',
@@ -47,22 +48,24 @@ function AddChar() {
     }
 
     const handleSumbit = async () => {
+  
+        let x = {
+            name: charForm.name,
+            anime: charForm.anime,
+            biography: charForm.biography,
+            img_links: Object.values(charForm.img_links)
+        }
 
-        const query = await fetch('http://localhost:3000/api/add_char', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body:JSON.stringify(charForm)
-        })
+        const { data, error } = await supabase
+            .from('characters')
+            .insert(x)
+            .select()
 
-
-        if(query.status == 201){
-            alert("Character Added");
-            handleFormClear();
+        if(error) {
+            console.log(error)
         } else {
-            alert("Something went wrong :(");
-        }   
+            console.log(data);
+        }
     }
     
     return (
@@ -70,7 +73,7 @@ function AddChar() {
             <h4>Add Character</h4>
             <input type='text' placeholder='name' name='name' onChange={handleFormChange} value={charForm.name}/>
             <input type='text' placeholder='anime' name='anime'onChange={handleFormChange} value={charForm.anime}/>
-            <textarea name='bio' rows='4' cols='50' placeholder='Biography' onChange={handleFormChange} value={charForm.bio}></textarea>
+            <textarea name='biography' rows='4' cols='50' placeholder='Biography' onChange={handleFormChange} value={charForm.biography}></textarea>
             <div>
                 <input type='text' placeholder='img1' name='link1' onChange={handleFormChange} value={charForm.img_links.link1}/>
                 <input type='text' placeholder='img2' name='link2' onChange={handleFormChange} value={charForm.img_links.link2}/>
