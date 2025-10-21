@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
-import { supabase } from '../utils';
+import { supabase } from '../utils'
 
 function Quotes() {
 
