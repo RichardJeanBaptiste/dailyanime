@@ -5,6 +5,8 @@ import { supabase } from './utils';
 import { useNavigate } from 'react-router';
 import './App.css'
 
+console.log(import.meta.env.VITE_SUPABASE_URL)
+
 
 function App() {
 
