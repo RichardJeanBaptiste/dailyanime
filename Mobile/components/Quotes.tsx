@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import {StyleSheet, View, Text, Image, Pressable} from 'react-native';
+import { supabase } from '../utils'
 
 function Quotes() {
 
@@ -10,57 +11,27 @@ function Quotes() {
         quote: 'random_quote',
     })
 
-    useEffect(() => {
-         const fetchQuote = async () => {
-            try {
-                const response = await fetch("http://10.0.2.2:3000/api/quotes/random", {
-                method: 'GET',
-                });
-
-                if (!response.ok) {
-                throw new Error(`Server error: ${response.status}`);
-                }
-
-                const data = await response.json();
-                //console.log('Fetched data:', data);
-
-                setCurrentQuote({
-                    name: data[0].name || 'Unknown',
-                    anime: data[0].anime || 'Unknown Anime',
-                    img_links: data[0].img_links || [],
-                    quote: data[0].quote || 'No quote available.',
-                });
-            } catch (error) {
-                console.error('Error fetching quote:', error);
-            }
-        };
-        fetchQuote();
-    },[]);
-
     const getQuote = async () => {
 
-       try {
-            const response = await fetch("http://10.0.2.2:3000/api/quotes/random", {
-                method: 'GET',
-            });
-
-            if (!response.ok) {
-            throw new Error(`Server error: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Fetched data:', data);
-
+        const { data, error } = await supabase.rpc('hello')
+        if(error) {
+            console.error('RPC Error:' , error)
+        } else {
+            console.log(data)
             setCurrentQuote({
-                name: data[0].name || 'Unknown',
-                anime: data[0].anime || 'Unknown Anime',
-                img_links: data[0].img_links || [],
-                quote: data[0].quote || 'No quote available.',
-            });
-        } catch (error) {
-            console.error('Error fetching quote:', error);
+                name: data.name,
+                anime: data.anime,
+                img_links: data.img_links,
+                quote: data.quote
+            })
         }
     }
+
+    useEffect(() => {
+        getQuote();
+    },[]);
+
+    
     
     return (
         <View style={styles.quote_root}>
@@ -84,7 +55,7 @@ function Quotes() {
 
             <View style={styles.quote_container}>
                 <View style={styles.divider}/>
-                <Text style={styles.quote_text}>
+                <Text style={styles.quote_text} onPress={getQuote}>
                     {currentQuote.quote}
                 </Text>
             </View>

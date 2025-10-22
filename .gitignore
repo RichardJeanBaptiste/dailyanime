@@ -1,5 +1,7 @@
 .env
+/Mobile/utils.tsx
 node_modules
+.utils.tsx
 
 # React Native build files
 
