@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import { supabase } from '../utils';
 
@@ -66,8 +65,6 @@ function EditChar() {
                 img_links: x,
                 charid: data[0].charid
             })
-
-            //console.log(charInfo)
         }
 
     }

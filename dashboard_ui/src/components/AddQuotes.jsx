@@ -11,17 +11,10 @@ function AddQuotes() {
     });
 
     const addQuote = async () => {
-        /**
-         * Get CharID
-         * loop through quotes
-         *      create Array -> [{id: charid, quote: 'quote'}, {...}]
-         */
-        
+ 
         let currentId;
         let temp;
         let dataToInsert = [];
-
-        //console.log(quoteForm.character)
         
         const { data, error } = await supabase
             .from('characters')
@@ -46,6 +39,10 @@ function AddQuotes() {
 
         if(insertError) {
             console.log(insertError)
+            alert("Something went wrong adding quotes")
+        } else {
+            alert("Quotes Added");
+            clearForm();
         }
         
     };

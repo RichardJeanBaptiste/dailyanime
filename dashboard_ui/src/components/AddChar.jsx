@@ -63,8 +63,11 @@ function AddChar() {
 
         if(error) {
             console.log(error)
+            alert("Something went wrong adding character")
         } else {
             console.log(data);
+            alert("Character Added");
+            handleFormClear();
         }
     }
     
