@@ -6,11 +6,11 @@ import { supabase } from '../utils'
 function Quotes() {
 
     const [currentQuote, setCurrentQuote] = useState({
-        name: 'char_name',
-        anime: 'char_anime',
+        name: '',
+        anime: '',
         img_links: [],
-        quote: 'random_quote',
-        biography: 'biography'
+        quote: '',
+        biography: ''
     })
 
     const [imageUriIndex, setImageUriIndex ] = useState(0);
@@ -55,14 +55,14 @@ function Quotes() {
             
             container: {
                 position: 'absolute',
-                top: '40%',
+                top: '30%',
                 left : '63%',
                 transform: 'translate(-50%,-50%)',
                 width: '100%',
-                height: '50%'
+                height: '40%'
             },
             scrollView: {
-                backgroundColor: 'pink',
+                width: '100%'
             },
             text: {
                 fontSize: 42,
@@ -80,61 +80,53 @@ function Quotes() {
         return (
 
             <View style={styles.container}>
-                <ScrollView style={styles.scrollView} horizontal={true}>
-                    <Image
-                        style= {styles.images}
-                        source={{
-                            uri: currentQuote.img_links[0]
-                        }}
-                   
-                    />
-
-
-                    <Image
-                        style= {styles.images}
-                        source={{
-                            uri: currentQuote.img_links[1]
-                        }}
-                       
-                    />
-
-                    <Image
-                        style= {styles.images}
-                        source={{
-                            uri: currentQuote.img_links[2]
-                        }}
-                       
-                    />
-
-                    <Image
-                        style= {styles.images}
-                        source={{
-                            uri: currentQuote.img_links[0]
-                        }}
-                    />
-
-                    <Image
-                        style= {styles.images}
-                        source={{
-                            uri: currentQuote.img_links[2]
-                        }}
-                    />
+                <ScrollView 
+                    style={styles.scrollView} 
+                    horizontal={true}
+                    contentContainerStyle={{paddingRight: '50%'}}
+                >
+                    {currentQuote.img_links.map((img, index) => {
+                        return (
+                            <Image
+                                style= {styles.images}
+                                source={{
+                                    uri: img
+                                }}
+                                key={index}
+                            />
+                        )
+                    })}
                 </ScrollView>
             </View>            
-            
-            
+             
         )
             
     }
 
     const ModalBio = () => {
         return (
-            <View style={{ position: 'absolute', top: '80%', left: '60%', transform: 'translate(-50%, -50%)'}}>
-                <Text>{currentQuote.name} | {currentQuote.anime}</Text>
-                <Text>{currentQuote.biography}</Text>
+            <View style={{ position: 'absolute', top: '80%', left: '60%', transform: 'translate(-50%, -50%)', width: 300, height: 300}}>
+                
+                <View style={{ width: '100%', height: '90%'}}>
+                    <Text style={{fontWeight: 'bold', fontSize: 18}}>{currentQuote.name} | {currentQuote.anime}</Text>
 
-                <View style={{display: 'flex',  }}> 
+                   
+                    <ScrollView style={{ width: '100%' }}>
+                        <Text style={{fontSize: 16 }}>{currentQuote.biography}</Text>
+                    </ScrollView>
+                    
+                </View>
+                
 
+                <View style={{display: 'flex',  flexDirection: 'row', marginTop: '10%', width: '100%', justifyContent: 'center', alignItems: 'center', gap: 10}}> 
+                    <Button
+                        title="Wiki"
+
+                    />
+                    <Button
+                        title="Close"
+                        onPress={() => setModalVisible(!modalVisible)}
+                    />
                 </View>
             </View>
         )
@@ -155,13 +147,7 @@ function Quotes() {
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
                             <ModalImages/>
-                            
                             <ModalBio/>
-                                
-                            <Button
-                                title="Close"
-                                onPress={() => setModalVisible(!modalVisible)}
-                            />
                         </View>
                     </View>
                 </Modal>
