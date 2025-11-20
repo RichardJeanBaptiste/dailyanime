@@ -11,6 +11,7 @@
   "author": "Richard Jean-Baptiste",
   "license": "ISC",
   "dependencies": {
+    "@react-native-vector-icons/feather": "^12.4.0",
     "@supabase/supabase-js": "^2.75.0",
     "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",

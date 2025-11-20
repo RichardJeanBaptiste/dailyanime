@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import {StyleSheet, View, Text, Image, Pressable, Modal, Button, ScrollView } from 'react-native';
+import {StyleSheet, View, Text, Image, Pressable, Modal, Button, ScrollView, TouchableOpacity } from 'react-native';
 import {SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
+import Feather from '@react-native-vector-icons/feather';
 import { supabase } from '../utils'
 
 function Quotes() {
@@ -71,9 +72,7 @@ function Quotes() {
             images: {
                 width: 200,
                 height: 200,
-                marginTop: '5%',
-                marginLeft: '3%',
-
+                flex: 1
             }
         });
 
@@ -87,13 +86,15 @@ function Quotes() {
                 >
                     {currentQuote.img_links.map((img, index) => {
                         return (
-                            <Image
-                                style= {styles.images}
-                                source={{
-                                    uri: img
-                                }}
-                                key={index}
-                            />
+                            <View style={{ width: 200, height: 200,  marginRight: '3%'}} key={index}>
+                                <Image
+                                    style= {styles.images}
+                                    source={{
+                                        uri: img
+                                    }}
+                                    resizeMode='contain'
+                                />
+                            </View>
                         )
                     })}
                 </ScrollView>
@@ -184,21 +185,37 @@ function Quotes() {
 
 
                 <View style={styles.bottom_nav}>
-                    <View style={{ width: '100%', height: '100%', gap: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                        <Button
-                            title="Share"
-                            color="red"
-                        />
-                        
-                        <Button
-                            title="Save"
-                            color="red"
-                        />
+                    <View style={{ width: '100%', height: '100%', gap: 60, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+    
+                        <Pressable 
+                            style={({ pressed }) => [
+                                { opacity: pressed ? 0.6 : 1.0 } 
+                            ]}
+                            onPress={() => console.log("share button")}
+                        >
+                            <Feather name="share-2" size={30} color="#900"/>
+                        </Pressable>
 
-                        <Button
-                            title="Search"
-                            color="red"
-                        />
+                        <Pressable
+                            style={({ pressed }) => [
+                                { opacity: pressed ? 0.6 : 1.0 } 
+                            ]} 
+                            onPress={() => console.log("save button")}
+                        >
+                            <Feather name="pocket" size={30} color="#900" />
+                        </Pressable>
+
+                        <Pressable
+                            style={({ pressed }) => [
+                                { opacity: pressed ? 0.6 : 1.0 } 
+                            ]} 
+                            onPress={() => console.log("search button")}
+                        >
+                            <Feather name="external-link" size={30} color="#900"/>
+                        </Pressable>
+
+                        
+                        
                     </View>
                 </View>
             </SafeAreaView>
