@@ -4,6 +4,7 @@ import AddQuotes from "./AddQuotes";
 import EditChar from "./EditChar";
 import { supabase } from "../utils";
 import { useNavigate } from "react-router";
+import './Homepage.css';
 
 
 function Homepage(){
@@ -63,7 +64,7 @@ function Homepage(){
     }
 
     return (
-        <div>
+        <div className="root">
 
             <button onClick={viewQuotes}> View Quotes</button>
             

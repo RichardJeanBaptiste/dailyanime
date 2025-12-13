@@ -8,12 +8,30 @@ function AddChar() {
         name: '',
         anime: '',
         biography: '',
+        wiki: '',
         img_links: {
             link1: '',
             link2: '',
             link3: ''
         }
     });
+
+    const [ imgs, setImgs ] = useState([]);
+
+    const [ imgValue,  setImageValue ] = useState("");
+
+    const addImgs = (img_link) => {
+        let x = [...imgs];
+
+        x.push(img_link)
+
+        setImgs(x)
+        setImageValue("")
+    } 
+    
+    const handleImgValue = (e) => {
+        setImageValue(e.target.value);
+    }
 
     const handleFormChange = (e) => {
         const {name, value} = e.target;
@@ -39,12 +57,15 @@ function AddChar() {
             name: '',
             anime: '',
             biography: '',
+            wiki: '',
             img_links: {
                 link1: '',
                 link2: '',
                 link3: ''
             }
         })
+
+        setImgs([]);
     }
 
     const handleSumbit = async () => {
@@ -53,8 +74,10 @@ function AddChar() {
             name: charForm.name,
             anime: charForm.anime,
             biography: charForm.biography,
-            img_links: Object.values(charForm.img_links)
+            wiki: charForm.wiki,
+            img_links:  imgs //Object.values(charForm.img_links)
         }
+        //console.log(imgs)
 
         const { data, error } = await supabase
             .from('characters')
@@ -72,21 +95,37 @@ function AddChar() {
     }
     
     return (
-        <div style={{display: 'flex', flexDirection: 'column' }}>
-            <h4>Add Character</h4>
-            <input type='text' placeholder='name' name='name' onChange={handleFormChange} value={charForm.name}/>
-            <input type='text' placeholder='anime' name='anime'onChange={handleFormChange} value={charForm.anime}/>
-            <textarea name='biography' rows='4' cols='50' placeholder='Biography' onChange={handleFormChange} value={charForm.biography}></textarea>
-            <div>
-                <input type='text' placeholder='img1' name='link1' onChange={handleFormChange} value={charForm.img_links.link1}/>
-                <input type='text' placeholder='img2' name='link2' onChange={handleFormChange} value={charForm.img_links.link2}/>
-                <input type='text' placeholder='img3' name='link3' onChange={handleFormChange} value={charForm.img_links.link3}/>
+        <div style={{display: 'flex', flexDirection: 'row' , width: '100%', height: '15%'}}>
+          
+            <div style={{ display: 'flex', flexDirection: 'column' , width: '50%'}}>
+                <h4>Add Character</h4>
+                <input type='text' placeholder='name' name='name' onChange={handleFormChange} value={charForm.name}/>
+                <input type='text' placeholder='anime' name='anime'onChange={handleFormChange} value={charForm.anime}/>
+                <input type='text' placeholder='wiki' name='wiki' onChange={handleFormChange} value={charForm.wiki}/>
+                <textarea name='biography' rows='4' cols='50' placeholder='Biography' onChange={handleFormChange} value={charForm.biography}></textarea>
+                <div style={{display: 'flex', flexDirection: 'row'}}>
+                    <button onClick={handleFormClear}>clear</button>
+                    <button onClick={handleSumbit}>submit</button>
+                </div>
             </div>
 
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <button onClick={handleFormClear}>clear</button>
-                <button onClick={handleSumbit}>submit</button>
-            </div>
+            
+            
+            <div style={{ display: 'flex', flexDirection: 'column',  width: '40%', marginLeft: '3%' }}>
+
+                <div>
+                    <input type='text' placeholder='image link' name='imgValue' onChange={handleImgValue} value={imgValue}/>
+                    <button onClick={() => addImgs(imgValue)}>Add Image</button>
+                </div>
+                
+                <div style={{height: '50%', overflowY: 'scroll'}}>
+                    {imgs.map((x, index) => {
+                        return (
+                            <p key={index}>{x}</p>
+                        )
+                    })}
+                </div>
+            </div> 
         </div>
     )
 }

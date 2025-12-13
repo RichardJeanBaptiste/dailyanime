@@ -11,9 +11,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
-    "@react-native-vector-icons/evil-icons": "^12.3.0",
     "@react-native-vector-icons/feather": "^12.4.0",
-    "@react-native-vector-icons/fontawesome6": "^12.2.0",
     "@react-native/new-app-screen": "0.82.0",
     "@supabase/supabase-js": "^2.76.0",
     "dotenv": "^17.2.3",

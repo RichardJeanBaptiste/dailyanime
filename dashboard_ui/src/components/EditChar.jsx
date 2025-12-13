@@ -7,11 +7,8 @@ function EditChar() {
         name: '',
         anime: '',
         biography: '',
-        img_links : {
-            image1: '',
-            image2: '',
-            image3: ''
-        },
+        wiki: '',
+        img_links : [],
         charid: ''
     });
     
@@ -19,9 +16,9 @@ function EditChar() {
 
     const [searchChar, setSearchChar] = useState("");
 
-    const getInfo = async () => {
+    const [newImgLink, setNewImgLink] = useState("");
 
-        //console.log(charInfo.name)
+    const getInfo = async () => {
         
         const { data, error } = await supabase
             .from('characters')
@@ -31,38 +28,24 @@ function EditChar() {
         if(error) {
             console.log(error)
         } else {
-   
-            let imgs = data[0].img_links;
 
-            let x = {}
-            
-            if(imgs == null) {
-                x = {
-                    image1: '',
-                    image2: '',
-                    image3: ''
-                }
-            } else {
-                for(let i = 0; i < imgs.length; i++) {
-                    let y = `image${i + 1}`
-                    x={ ...x, [y]: imgs[i]}
-                }
-            }
-            
+            console.log(data)
         
             setInitInfo({
                 name: data[0].name || '',
                 anime: data[0].anime || '',
+                wiki: data[0].wiki || '',
                 biography: data[0].biography || '',
-                img_links: x,
+                img_links: data[0].img_links || [],
                 charid: data[0].charid
             })
 
             setCharInfo({
                 name: data[0].name || '',
                 anime: data[0].anime || '',
+                wiki: data[0].wiki || '',
                 biography: data[0].biography || '',
-                img_links: x,
+                img_links: data[0].img_links || [],
                 charid: data[0].charid
             })
         }
@@ -71,6 +54,10 @@ function EditChar() {
 
     const handleInputChange = (e) => {
         setSearchChar(e.target.value);
+    }
+
+    const handleImgChange = (e) => {
+        setNewImgLink(e.target.value);
     }
 
     const editCharInfo = (e) => {
@@ -92,16 +79,49 @@ function EditChar() {
         
     }
 
+    const ImgItem = ({img_link, index}) => {
+
+        const removeFromImgs = () => {
+            let x = charInfo.img_links.filter((x) => x !== img_link)
+
+            setCharInfo(prevState => ({
+                ...prevState,
+                img_links: x,
+            }))
+        }
+
+        return (
+            <li style={{ display: 'flex', flexDirection: 'row' }} key={index}>
+                <p>{img_link}</p>
+                <button onClick={removeFromImgs}>x</button>
+            </li>
+        )
+    }
+
+    const addNewImg = () => {
+        let x = [...charInfo.img_links];
+        x.push(newImgLink);
+
+        setCharInfo(prevState => ({
+            ...prevState,
+            img_links: x,
+        }))
+
+        setNewImgLink("");
+    }
+
     const clearForm = () => {
         setCharInfo({
             name: '',
             anime: '',
             biography: '',
-            img_links: {},
+            wiki: '',
+            img_links: [],
             charid: ''
         });
 
         setSearchChar("");
+        setNewImgLink("");
     }
 
     const handleReset = () => {
@@ -118,15 +138,19 @@ function EditChar() {
             .update({
                 name: charInfo.name,
                 anime: charInfo.anime,
+                wiki: charInfo.wiki,
                 biography: charInfo.biography,
-                img_links: Object.values(charInfo.img_links)
+                img_links: charInfo.img_links
             })
             .eq('charid', charInfo.charid)
 
-
         if(error) {
             console.log(error)
+            alert("Editing Failed");
         }
+
+        alert(`${searchChar}: info edited`);
+        clearForm();
     }
 
     return (
@@ -145,6 +169,9 @@ function EditChar() {
                 <label htmlFor='anime'>Anime:</label>
                 <input type='text' name="anime" value={charInfo.anime} onChange={editCharInfo}/>
 
+                <label htmlFor='wiki'>Wiki:</label>
+                <input type='text' name="wiki" value={charInfo.wiki} onChange={editCharInfo}/>
+
                 <label htmlFor='biography'>Biography:</label>
                 <textarea 
                     placeholder='Enter Bio' id="biography" name="biography" 
@@ -154,28 +181,15 @@ function EditChar() {
             </div>
 
             <br/>
-            <ul>
-                {charInfo?.img_links && Object.values(charInfo.img_links).length > 0 ? (
-                    Object.values(charInfo.img_links).map((x, index) => (
-                        <div key={index}>
-                            <label htmlFor={`image${index + 1}`}>Image{index + 1}:</label>
-                            <input  placeholder={x} name={`image${index + 1}`} onChange={editCharInfo}/>
-                        </div>
-                    ))
-                ) : (
-                    <div style={{display: 'flex', flexDirection: 'column' }}>
-                        <p> No images available</p>
-
-                        <label htmlFor='image1'>Image1 : </label>
-                        <input name='image1' placeholder='Enter Img Link' onChange={editCharInfo}/>
-
-                        <label htmlFor='image2'>Image2 : </label>
-                        <input name='image2' placeholder='Enter Img Link' onChange={editCharInfo}/>
-
-                        <label htmlFor='image3'>Image3 : </label>
-                        <input name='image3' placeholder='Enter Img Link' onChange={editCharInfo}/>
-                    </div>   
-                )}
+            <h4>Images</h4>
+            <input type='text' name='imgLinkInput' placeholder='Enter Image Link' value={newImgLink} onChange={handleImgChange}/>
+            <button onClick={addNewImg}>Add Image</button>
+            <ul style={{ width: '70%' }}>
+                {charInfo.img_links.map((x, index) => {
+                    return (
+                        <ImgItem key={index} img_link={x}/>
+                    )
+                })}
             </ul>
 
             <div>

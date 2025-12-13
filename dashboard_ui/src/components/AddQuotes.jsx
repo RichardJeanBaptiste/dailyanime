@@ -112,13 +112,13 @@ function AddQuotes() {
             <h4>Add Quote</h4>
 
             <div>
-            <ul>
-                {quotesToAdd.map((x, index) => {
-                return (
-                    <Quote quote={x} key={index}/>
-                )
-                })}
-            </ul>
+                <ul>
+                    {quotesToAdd.map((x, index) => {
+                    return (
+                        <Quote quote={x} key={index}/>
+                    )
+                    })}
+                </ul>
             </div>
 
             <div>
