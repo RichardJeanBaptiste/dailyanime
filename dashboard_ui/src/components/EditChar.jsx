@@ -30,26 +30,29 @@ function EditChar() {
         } else {
 
             console.log(data)
-        
-            setInitInfo({
-                name: data[0].name || '',
-                anime: data[0].anime || '',
-                wiki: data[0].wiki || '',
-                biography: data[0].biography || '',
-                img_links: data[0].img_links || [],
-                charid: data[0].charid
-            })
 
-            setCharInfo({
-                name: data[0].name || '',
-                anime: data[0].anime || '',
-                wiki: data[0].wiki || '',
-                biography: data[0].biography || '',
-                img_links: data[0].img_links || [],
-                charid: data[0].charid
-            })
+            if(data.length == 0) {
+                alert(`${searchChar} - Not Found `)
+            } else {
+                setInitInfo({
+                    name: data[0].name || '',
+                    anime: data[0].anime || '',
+                    wiki: data[0].wiki || '',
+                    biography: data[0].biography || '',
+                    img_links: data[0].img_links || [],
+                    charid: data[0].charid
+                })
+
+                setCharInfo({
+                    name: data[0].name || '',
+                    anime: data[0].anime || '',
+                    wiki: data[0].wiki || '',
+                    biography: data[0].biography || '',
+                    img_links: data[0].img_links || [],
+                    charid: data[0].charid
+                })
+            }
         }
-
     }
 
     const handleInputChange = (e) => {
@@ -79,6 +82,7 @@ function EditChar() {
         
     }
 
+
     const ImgItem = ({img_link, index}) => {
 
         const removeFromImgs = () => {
@@ -92,7 +96,13 @@ function EditChar() {
 
         return (
             <li style={{ display: 'flex', flexDirection: 'row' }} key={index}>
-                <p>{img_link}</p>
+                <p style={{ width: '40%', textOverflow:'ellipsis', overflow: 'hidden', whiteSpace:'nowrap' }}>{img_link}</p>
+                <img
+                    src={img_link}
+                    width="100"
+                    height="100"
+                    referrerPolicy="no-referrer"
+                />
                 <button onClick={removeFromImgs}>x</button>
             </li>
         )
