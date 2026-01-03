@@ -4,6 +4,8 @@ import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import App from './App.jsx';
 import Homepage from './components/Homepage.jsx';
+import PrivacyPolicy from './components/PrivacyPolicy.jsx';
+import TermsPolicy from './components/TermsPolicy.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -11,6 +13,8 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />}/>
         <Route path='/homepage' element={<Homepage />}/>
+        <Route path='/privacy_policy' element={<PrivacyPolicy/>}/>
+        <Route path='/terms&conditions' element={<TermsPolicy/>}/>
       </Routes>
     </BrowserRouter>
   </StrictMode>,
