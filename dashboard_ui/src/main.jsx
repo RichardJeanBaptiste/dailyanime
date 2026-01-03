@@ -13,8 +13,6 @@ createRoot(document.getElementById('root')).render(
       <Routes>
         <Route path="/" element={<App />}/>
         <Route path='/homepage' element={<Homepage />}/>
-        <Route path='/privacy_policy' element={<PrivacyPolicy/>}/>
-        <Route path='/terms&conditions' element={<TermsPolicy/>}/>
       </Routes>
     </BrowserRouter>
   </StrictMode>,
