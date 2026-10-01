@@ -4,8 +4,12 @@ import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import App from './App.jsx';
 import Homepage from './components/Homepage.jsx';
-import PrivacyPolicy from './components/PrivacyPolicy.jsx';
-import TermsPolicy from './components/TermsPolicy.jsx';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -5,6 +5,8 @@ import EditChar from "./EditChar";
 import { supabase } from "../utils";
 import { useNavigate } from "react-router";
 import './Homepage.css';
+import NavBar from "./NavBar";
+import Box from '@mui/material/Box';
 
 
 function Homepage(){
@@ -64,8 +66,21 @@ function Homepage(){
     }
 
     return (
-        <div className="root">
+        <Box className="root">
 
+            <Box sx={{ width: '100%', height: '10%', position: 'absolute', top: 15 }}>
+                <NavBar/>
+            </Box>
+
+        </Box>
+    )
+}
+
+export default Homepage;
+
+/**
+ * 
+ * 
             <button onClick={viewQuotes}> View Quotes</button>
             
             <br/>
@@ -92,8 +107,4 @@ function Homepage(){
             <br/>
 
             <button onClick={signOut}>Sign Out</button>
-        </div>
-    )
-}
-
-export default Homepage;
+ */
