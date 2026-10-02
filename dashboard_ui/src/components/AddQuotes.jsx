@@ -11,11 +11,6 @@ function AddQuotes() {
 
     const [quotesToAdd, setAddQuotes] = useState([]); 
 
-    const [quoteForm, setQuoteForm] = useState({
-        character: '',
-    });
-
-
     const handleInputs = (e, field) => {
 
         setCurrentQuote((prev) => ({
@@ -32,30 +27,63 @@ function AddQuotes() {
         })
     }
 
+    const addToQuotes = () => {
+        setAddQuotes((prev) => [
+            ...prev,
+            {
+                character: currentQuote.character,
+                anime: currentQuote.anime,
+                quote: currentQuote.quote
+            }
+        ]);
+
+        setCurrentQuote({
+            character: '',
+            anime: '',
+            quote: ''
+        });
+
+    };
 
     return (
         <Box sx={{ width:'100%', height: '100%' }}>
 
             <Typography variant='h4'>Add Quote</Typography>
 
-            <Box sx={{ marginTop: '2%', marginLeft: '2%' , width: '90%', borderStyle: 'solid', borderWidth: '.5px', borderBlockColor: 'black' }}>
+            <Box sx={{ marginTop: '2%', marginLeft: '2%' , width: '90%', borderStyle: 'solid', borderWidth: '.5px', borderBlockColor: 'lightgrey', borderRadius: '20px' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' , gap: 5, marginTop: '2%', marginLeft: '2%', width: '90%'}}>
-                    <TextField variant='outlined' label="Character" onChange={(e) => handleInputs(e,'character')}/>
-                    <TextField variant='outlined' label="Anime" onChange={(e) => handleInputs(e ,'anime')}/>
-                    <TextField variant='outlined' label="Quote" onChange={(e) => handleInputs(e, 'quote')}/>
+                    <TextField variant='outlined' label="Character" onChange={(e) => handleInputs(e,'character')} value={currentQuote.character}/>
+                    <TextField variant='outlined' label="Anime" onChange={(e) => handleInputs(e ,'anime')} value={currentQuote.anime}/>
+                    <TextField variant='outlined' label="Quote" onChange={(e) => handleInputs(e, 'quote')} value={currentQuote.quote}/>
                 </Box>
                 
 
                 <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '2%' }}>
                     <Button variant="text" onClick={clearQuote}>Clear</Button>
-                    <Button variant="text" onClick={() => console.log(currentQuote)}>Add</Button>
+                    <Button variant="text" onClick={addToQuotes}>Add</Button>
+                    <Button variant="text" onClick={() => console.log(quotesToAdd)}>Test</Button>
                 </Box>
             </Box>
 
             {/*************** Preview ****************************/}
 
-            <Box sx={{ width: '100%', height: '60%', overflowY: 'scroll', backgroundColor: 'pink' }}>
-                <p>Preview</p>
+            <Box sx={{ width: '100%', height: '50%', overflowY: 'scroll', marginTop: '2%' }}>
+
+                {/************************ Color Codes ******************************/}
+                <Box>
+
+                </Box>
+
+                {/*********************** Preview Header ****************************/}
+                <Box sx={{ display: 'flex', flexDirection: 'row', width: '90%', height: '10%', backgroundColor: 'lightgray', marginLeft: '2%'}}>
+                    <Box sx={{ borderRightStyle: 'solid', borderRightColor: 'whitesmoke', borderRightWidth: '.2px', width: '45%', marginLeft: '.5%' }}>
+                        <Typography sx={{ color: 'darkgrey' }}>Quote</Typography>
+                    </Box>
+                    
+                    <p>Character</p>
+                    <p>Anime</p>
+                    <p>Check</p>
+                </Box>
             </Box>
 
         </Box>
