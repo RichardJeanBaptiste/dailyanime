@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { supabase } from '../utils';
+import { Box, Typography, TextField, Button } from '@mui/material';
 
 function AddQuotes() {
-    const [ currentQuote, setCurrentQuote ] = useState("")
+    const [ currentQuote, setCurrentQuote ] = useState({
+        character: '',
+        anime: '',
+        quote: ''
+    });
 
     const [quotesToAdd, setAddQuotes] = useState([]); 
 
@@ -10,6 +15,60 @@ function AddQuotes() {
         character: '',
     });
 
+
+    const handleInputs = (e, field) => {
+
+        setCurrentQuote((prev) => ({
+            ...prev,
+            [field]: e.target.value,
+        }));
+    }
+
+    const clearQuote = () => {
+        setCurrentQuote({
+            character: '',
+            anime: '',
+            quote: ''
+        })
+    }
+
+
+    return (
+        <Box sx={{ width:'100%', height: '100%' }}>
+
+            <Typography variant='h4'>Add Quote</Typography>
+
+            <Box sx={{ marginTop: '2%', marginLeft: '2%' , width: '90%', borderStyle: 'solid', borderWidth: '.5px', borderBlockColor: 'black' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column' , gap: 5, marginTop: '2%', marginLeft: '2%', width: '90%'}}>
+                    <TextField variant='outlined' label="Character" onChange={(e) => handleInputs(e,'character')}/>
+                    <TextField variant='outlined' label="Anime" onChange={(e) => handleInputs(e ,'anime')}/>
+                    <TextField variant='outlined' label="Quote" onChange={(e) => handleInputs(e, 'quote')}/>
+                </Box>
+                
+
+                <Box sx={{ display: 'flex', flexDirection: 'row', marginTop: '2%' }}>
+                    <Button variant="text" onClick={clearQuote}>Clear</Button>
+                    <Button variant="text" onClick={() => console.log(currentQuote)}>Add</Button>
+                </Box>
+            </Box>
+
+            {/*************** Preview ****************************/}
+
+            <Box sx={{ width: '100%', height: '60%', overflowY: 'scroll', backgroundColor: 'pink' }}>
+                <p>Preview</p>
+            </Box>
+
+        </Box>
+    )
+}
+
+
+export default AddQuotes;
+
+
+/**
+ * 
+ * 
     const addQuote = async () => {
  
         let currentId;
@@ -106,37 +165,9 @@ function AddQuotes() {
         )
     }
     
+ * 
+ * 
+ * 
+ * 
+ */
 
-    return (
-        <div>
-            <h4>Add Quote</h4>
-
-            <div>
-                <ul>
-                    {quotesToAdd.map((x, index) => {
-                    return (
-                        <Quote quote={x} key={index}/>
-                    )
-                    })}
-                </ul>
-            </div>
-
-            <div>
-                <label htmlFor='quote'>Quote: </label>
-                <input id='quote' name='quote' type='text' onChange={editCurrentQuote} value={currentQuote}/>
-                <button onClick={addToQuotesArr}>Add to quotes</button>
-            </div>
-        
-            <div>
-                <label htmlFor='character'>Character: </label>
-                <input id='character' name='character' type='text' onChange={editQuoteForm} value={quoteForm.character}/>
-            </div>
-        
-            <button type='reset' onClick={clearForm}>Clear</button>
-            <button type='submit' onClick={addQuote}>Submit</button>
-        </div>
-    )
-}
-
-
-export default AddQuotes;

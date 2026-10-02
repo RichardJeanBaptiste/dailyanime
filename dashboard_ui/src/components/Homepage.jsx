@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AddChar from "./AddChar";
 import AddQuotes from "./AddQuotes";
 import EditChar from "./EditChar";
@@ -12,6 +12,8 @@ import Box from '@mui/material/Box';
 function Homepage(){
 
     let navigate = useNavigate();
+
+    const [ index, setIndex ] = useState(0);
 
     useEffect(() => {
 
@@ -29,9 +31,47 @@ function Homepage(){
             }
         })
     },[navigate]);
-    
 
-    const viewQuotes = async () => {
+    const handleChangeIndex = (newIndex) => {
+           setIndex(newIndex);
+    }
+    
+    const ShowIndex = () => {
+
+        if(index == 0) {
+            return <AddQuotes/>
+        }
+
+        if(index == 1) {
+            return <p>Add Chars</p>
+        }
+
+        if(index == 2) {
+            return <p>Edit Chars</p>
+        }
+    }
+   
+   
+
+    return (
+        <Box className="root">
+            <Box sx={{ width: '100%', height: '10%', position: 'absolute', top: 15 }}>
+                <NavBar handleChangeIndex={handleChangeIndex}/>
+                <Box sx={{ width: '100%', height: '100vh' }}>
+                    <ShowIndex/>
+                </Box>
+                
+            </Box>
+        </Box>
+    )
+}
+
+export default Homepage;
+
+/**
+ * 
+ * 
+ *  const viewQuotes = async () => {
 
         const { data: quotes, error } = await supabase.from('quotes').select();
 
@@ -54,32 +94,6 @@ function Homepage(){
         }
     }
 
-    const signOut = async () => {
-        
-        const { error } = await supabase.auth.signOut();
-
-        if(error) {
-            console.log(error.message)
-        } else {
-            navigate("/")
-        }
-    }
-
-    return (
-        <Box className="root">
-
-            <Box sx={{ width: '100%', height: '10%', position: 'absolute', top: 15 }}>
-                <NavBar/>
-            </Box>
-
-        </Box>
-    )
-}
-
-export default Homepage;
-
-/**
- * 
  * 
             <button onClick={viewQuotes}> View Quotes</button>
             
