@@ -16,7 +16,7 @@ function App() {
       console.log(event, session)
 
       if( event === 'SIGNED_IN') {
-        navigate('/homepage')
+        navigate('/dashboard')
       } else {
         data.subscription.unsubscribe()
       }
@@ -46,7 +46,7 @@ function App() {
       }
     } else {
       console.log(data)
-      navigate("/homepage")
+      navigate("/dashboard")
     }
   }
 

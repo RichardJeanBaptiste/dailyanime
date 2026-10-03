@@ -4,6 +4,7 @@ import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import App from './App.jsx';
 import Homepage from './components/Homepage.jsx';
+import Dashboard from './components/Dashboard/Dashboard.jsx';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -16,7 +17,7 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App />}/>
-        <Route path='/homepage' element={<Homepage />}/>
+        <Route path='/dashboard' element={<Dashboard />}/>
       </Routes>
     </BrowserRouter>
   </StrictMode>,

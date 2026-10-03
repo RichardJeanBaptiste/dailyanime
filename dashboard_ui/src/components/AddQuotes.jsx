@@ -75,7 +75,7 @@ function AddQuotes() {
                 </Box>
 
                 {/*********************** Preview Header ****************************/}
-                <Box sx={{ display: 'flex', flexDirection: 'row', width: '90%', height: '10%', backgroundColor: 'lightgray', marginLeft: '2%'}}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', width: '90%', height: '10%', backgroundColor: 'lightgray', marginLeft: '2%', borderStyle: 'solid', borderColor: 'black', borderWidth: '.5px'}}>
                     <Box sx={{ borderRightStyle: 'solid', borderRightColor: 'whitesmoke', borderRightWidth: '.2px', width: '45%', marginLeft: '.5%' }}>
                         <Typography sx={{ color: 'darkgrey' }}>Quote</Typography>
                     </Box>

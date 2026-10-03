@@ -19,6 +19,7 @@
     "@supabase/supabase-js": "^2.75.1",
     "bootstrap": "^5.3.8",
     "dotenv": "^17.2.3",
+    "papaparse": "^5.7.0",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.1",
