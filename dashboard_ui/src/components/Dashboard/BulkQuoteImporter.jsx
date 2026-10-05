@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { supabase, TABLES, IMPORT_CHUNK } from "../../utils";
 //import { charKey, parseBulk } from "./lib";
 import Papa from 'papaparse';
+import { useQuoteContext } from "../QuoteContext";
 
 const blankRow = () => ({ key: crypto.randomUUID(), quote: "", character: "", anime: "", episode: "" });
 
@@ -9,12 +10,7 @@ const SAMPLE = `quote,character,anime,episode
 "People's lives don't end, when they die. It ends when they lose faith.",Itachi Uchiha,Naruto Shippuden,
 "If you don't ta,ke risks, you can't crea,te a future.",Monkey D. Luffy,One Piece,`;
 
-/**
- * 
- * const SAMPLE = `quote,character,anime,episode
-"                   People's lives don't end, when they die. It ends when they lose faith.",Itachi Uchiha,Naruto Shippuden,
-"                   If you don't ta,ke risks, you can't crea,te a future.",Monkey D. Luffy,One Piece,`;
- */
+
 
 export default function BulkQuoteImporter() {
   const [raw, setRaw] = useState("");
@@ -23,33 +19,9 @@ export default function BulkQuoteImporter() {
   const [createMissing, setCreateMissing] = useState(true);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
+  
+  const { testString } = useQuoteContext();
 
-  // const charMap = useMemo(
-  //   () => new Map(characters.map((c) => [charKey(c.name, c.anime), c])),
-  //   [characters]
-  // );
-
-  // // Validate every row against existing characters and the rest of the batch
-  // const checked = useMemo(() => {
-  //   const seen = new Set();
-  //   return rows.map((r) => {
-  //     const dupKey = r.quote.trim().toLowerCase();
-  //     let status;
-  //     if (!r.quote.trim()) status = { level: "error", msg: "Quote is empty" };
-  //     else if (!r.anime.trim()) status = { level: "error", msg: "Anime is empty" };
-  //     else if (seen.has(dupKey)) status = { level: "error", msg: "Same quote appears earlier in this batch" };
-  //     else if (!r.character.trim()) status = { level: "warn", msg: "No character, will import unlinked" };
-  //     else if (charMap.has(charKey(r.character, r.anime))) status = { level: "ok", msg: "Character found" };
-  //     else status = createMissing
-  //       ? { level: "new", msg: "New character will be created" }
-  //       : { level: "warn", msg: "Character not found, will import unlinked" };
-  //     seen.add(dupKey);
-  //     return { ...r, status };
-  //   });
-  // }, [rows, charMap, createMissing]);
-
-  // const counts = checked.reduce((a, r) => ({ ...a, [r.status.level]: (a[r.status.level] || 0) + 1 }), {});
-  // const importable = checked.filter((r) => r.status.level !== "error");
 
   function loadPreview () {
     const result = Papa.parse(raw, {
@@ -72,53 +44,6 @@ export default function BulkQuoteImporter() {
   }
 
   
-  // const remove = (key) => setRows((rs) => rs.filter((r) => r.key !== key));
-
-  // async function runImport() {
-  //   setBusy(true);
-  //   setNotice(null);
-  //   try {
-  //     const map = new Map(charMap);
-
-  //     if (createMissing) {
-  //       const missing = new Map();
-  //       importable.filter((r) => r.status.level === "new").forEach((r) =>
-  //         missing.set(charKey(r.character, r.anime), { name: r.character.trim(), anime: r.anime.trim() })
-  //       );
-  //       if (missing.size) {
-  //         const { data, error } = await supabase
-  //           .from(TABLES.characters)
-  //           .upsert([...missing.values()], { onConflict: "name,anime" })
-  //           .select("id, name, anime");
-  //         if (error) throw error;
-  //         data.forEach((c) => map.set(charKey(c.name, c.anime), c));
-  //       }
-  //     }
-
-  //     const payload = importable.map((r) => ({
-  //       quote: r.quote.trim(),
-  //       anime: r.anime.trim(),
-  //       episode: r.episode.trim() || null,
-  //       character_id: r.character.trim() ? map.get(charKey(r.character, r.anime))?.id ?? null : null,
-  //     }));
-
-  //     let done = 0;
-  //     for (let i = 0; i < payload.length; i += IMPORT_CHUNK) {
-  //       const { error } = await supabase.from(TABLES.quotes).insert(payload.slice(i, i + IMPORT_CHUNK));
-  //       if (error) throw new Error(`${error.message} (after ${done} rows were saved)`);
-  //       done += Math.min(IMPORT_CHUNK, payload.length - i);
-  //     }
-
-  //     const imported = new Set(importable.map((r) => r.key));
-  //     setRows((rs) => rs.filter((r) => !imported.has(r.key)));
-  //     setNotice({ kind: "success", text: `Imported ${done} quotes.` });
-  //     onImported?.();
-  //   } catch (e) {
-  //     setNotice({ kind: "error", text: `Import stopped: ${e.message}` });
-  //   } finally {
-  //     setBusy(false);
-  //   }
-  // }
 
   
   const update = (key, field, value) => setRows((rs) => rs.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
@@ -194,10 +119,8 @@ export default function BulkQuoteImporter() {
         </div>
       </div>
 
-      <p onClick={() => console.log(rows)}>Test</p>
-
       {notice && <p className={`notice ${notice.kind}`} role="status">{notice.text}</p>}
-
+     
 
       {showPreview ? <Preview/> : <div/>}
 
@@ -276,5 +199,85 @@ export default function BulkQuoteImporter() {
           </div>
         </>
       )}
+
+
+        // const remove = (key) => setRows((rs) => rs.filter((r) => r.key !== key));
+
+  // async function runImport() {
+  //   setBusy(true);
+  //   setNotice(null);
+  //   try {
+  //     const map = new Map(charMap);
+
+  //     if (createMissing) {
+  //       const missing = new Map();
+  //       importable.filter((r) => r.status.level === "new").forEach((r) =>
+  //         missing.set(charKey(r.character, r.anime), { name: r.character.trim(), anime: r.anime.trim() })
+  //       );
+  //       if (missing.size) {
+  //         const { data, error } = await supabase
+  //           .from(TABLES.characters)
+  //           .upsert([...missing.values()], { onConflict: "name,anime" })
+  //           .select("id, name, anime");
+  //         if (error) throw error;
+  //         data.forEach((c) => map.set(charKey(c.name, c.anime), c));
+  //       }
+  //     }
+
+  //     const payload = importable.map((r) => ({
+  //       quote: r.quote.trim(),
+  //       anime: r.anime.trim(),
+  //       episode: r.episode.trim() || null,
+  //       character_id: r.character.trim() ? map.get(charKey(r.character, r.anime))?.id ?? null : null,
+  //     }));
+
+  //     let done = 0;
+  //     for (let i = 0; i < payload.length; i += IMPORT_CHUNK) {
+  //       const { error } = await supabase.from(TABLES.quotes).insert(payload.slice(i, i + IMPORT_CHUNK));
+  //       if (error) throw new Error(`${error.message} (after ${done} rows were saved)`);
+  //       done += Math.min(IMPORT_CHUNK, payload.length - i);
+  //     }
+
+  //     const imported = new Set(importable.map((r) => r.key));
+  //     setRows((rs) => rs.filter((r) => !imported.has(r.key)));
+  //     setNotice({ kind: "success", text: `Imported ${done} quotes.` });
+  //     onImported?.();
+  //   } catch (e) {
+  //     setNotice({ kind: "error", text: `Import stopped: ${e.message}` });
+  //   } finally {
+  //     setBusy(false);
+  //   }
+  // }
+
+
+
+
+  // const charMap = useMemo(
+  //   () => new Map(characters.map((c) => [charKey(c.name, c.anime), c])),
+  //   [characters]
+  // );
+
+  // // Validate every row against existing characters and the rest of the batch
+  // const checked = useMemo(() => {
+  //   const seen = new Set();
+  //   return rows.map((r) => {
+  //     const dupKey = r.quote.trim().toLowerCase();
+  //     let status;
+  //     if (!r.quote.trim()) status = { level: "error", msg: "Quote is empty" };
+  //     else if (!r.anime.trim()) status = { level: "error", msg: "Anime is empty" };
+  //     else if (seen.has(dupKey)) status = { level: "error", msg: "Same quote appears earlier in this batch" };
+  //     else if (!r.character.trim()) status = { level: "warn", msg: "No character, will import unlinked" };
+  //     else if (charMap.has(charKey(r.character, r.anime))) status = { level: "ok", msg: "Character found" };
+  //     else status = createMissing
+  //       ? { level: "new", msg: "New character will be created" }
+  //       : { level: "warn", msg: "Character not found, will import unlinked" };
+  //     seen.add(dupKey);
+  //     return { ...r, status };
+  //   });
+  // }, [rows, charMap, createMissing]);
+
+  // const counts = checked.reduce((a, r) => ({ ...a, [r.status.level]: (a[r.status.level] || 0) + 1 }), {});
+  // const importable = checked.filter((r) => r.status.level !== "error");
+
  * 
  */

@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { supabase } from './utils';
 import { useNavigate } from 'react-router';
+import { QuoteProvider } from './components/QuoteContext';
 import './App.css'
 
 
@@ -42,6 +43,7 @@ function App() {
 
     if(error) {
       if(error.message == "Invalid login credentials") {
+        console.log(error.message);
         alert("Invalid Login Credentials")
       }
     } else {
@@ -52,27 +54,27 @@ function App() {
 
 
   return (
-    <div className='login_root'>
-      <div className='login_form'>
-          <div className='login_container'>
-            <h3 className='login_text'>Login Page</h3>
-            <Form className='login_form2'>
-              <Form.Group>
-                <Form.Label>Username</Form.Label>
-                <Form.Control type='text' placeholder='username' onChange={handleEmail}/>
-              </Form.Group>
+      <div className='login_root'>
+        <div className='login_form'>
+            <div className='login_container'>
+              <h3 className='login_text'>Login Page</h3>
+              <Form className='login_form2'>
+                <Form.Group>
+                  <Form.Label>Username</Form.Label>
+                  <Form.Control type='text' placeholder='username' onChange={handleEmail}/>
+                </Form.Group>
 
-              <Form.Group id="p_input">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type='password' placeholder='password' onChange={handlePassword}/>
-              </Form.Group>
+                <Form.Group id="p_input">
+                  <Form.Label>Password</Form.Label>
+                  <Form.Control type='password' placeholder='password' onChange={handlePassword}/>
+                </Form.Group>
 
-              <Button onClick={handleLogin}>Login</Button>
-            </Form>
-            
-          </div>
-      </div>
-    </div>
+                <Button onClick={handleLogin}>Login</Button>
+              </Form>
+              
+            </div>
+        </div>
+      </div>    
   )
 }
 
