@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext } from 'react';
+import { supabase } from "../utils";
 
 
 const QuoteContext = createContext(null);
@@ -11,12 +12,19 @@ export function QuoteProvider({children}) {
 
     const queryClient = useQueryClient();
 
-    const [ testString , setTest ] = useState("Test Props");
+    const getQuotes = async () => {
 
-    const query = useQuery({ queryKey: ['quotes']})
+        const {data, error} = await supabase.rpc('get_quotes_json');
+
+        if(error) throw error;
+
+        return data;
+    }
+
+    const {isPending, isError, data, error } = useQuery({ queryKey: ['quotes'], queryFn: getQuotes});
     
     return (
-        <QuoteContext.Provider value={{ testString }}>
+        <QuoteContext.Provider value={{ isPending, isError, data, error }}>
             { children }
         </QuoteContext.Provider>   
     )

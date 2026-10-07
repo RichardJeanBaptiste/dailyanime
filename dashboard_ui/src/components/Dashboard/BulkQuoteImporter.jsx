@@ -20,7 +20,7 @@ export default function BulkQuoteImporter() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
   
-  const { testString } = useQuoteContext();
+  const { isPending, isError, data, error } = useQuoteContext();
 
 
   function loadPreview () {
@@ -28,6 +28,13 @@ export default function BulkQuoteImporter() {
         header: true,
         skipEmptyLines: true,
     });
+
+    result.data.map((x) => {
+      if(!x.key) {
+        x.key = crypto.randomUUID()
+      }
+      
+    })
 
     setRows((prev) => [
         ...prev,
@@ -43,58 +50,11 @@ export default function BulkQuoteImporter() {
     e.target.value = "";
   }
 
-  
 
-  
   const update = (key, field, value) => setRows((rs) => rs.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
 
-  const Preview = () => {
-    return (
-      <>
-        <div className="summary">
-          <span>{rows.length} rows</span>
-          { <span className="tag ok"> matched</span>}
-          { <span className="tag new"> new character</span>}
-          { <span className="tag warn"> unlinked</span>}
-          { <span className="tag error"> need fixing</span>}
-          <label className="check">
-            <input type="checkbox" onChange={(e) => setCreateMissing(e.target.checked)} />
-            Create characters that don't exist yet
-          </label>
-        </div>
-
-        <div className="table-wrap">
-            <table className="grid">
-              <thead>
-                <tr><th>Quote</th><th>Character</th><th>Anime</th><th>Check</th><th /></tr>
-              </thead>
-              <tbody>
-                {rows.map((r, index) => (
-                  <tr key={index} className={`lvl-`}>
-
-                    <td className="quote-cell">
-                      <textarea className="bubble" value={r.quote} onChange={(e) => update(r.key, "quote", e.target.value)} rows={2}  aria-label="Quote" />
-                    </td>
-
-                    <td>
-                      <input value={r.character} list="char-names"  onChange={(e) => update(r.key, "character", e.target.value)}  aria-label="Character" />
-                    </td>
-                    
-                    <td>
-                      <input value={r.anime} list="anime-names" onChange={(e) => update(r.key, "anime", e.target.value)} aria-label="Anime" />
-                    </td>
-                    
-                    
-                    <td><button className="icon-btn" onClick={() => remove(r.key)} aria-label="Remove row">×</button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-        </div>
-      </>
-    )
-  }
-
+  const remove = (key) => setRows((rs) => rs.filter((r) => r.key !== key));
+ 
   return (
     <section className="panel">
       <header className="panel-head">
@@ -120,9 +80,50 @@ export default function BulkQuoteImporter() {
       </div>
 
       {notice && <p className={`notice ${notice.kind}`} role="status">{notice.text}</p>}
-     
+      
 
-      {showPreview ? <Preview/> : <div/>}
+      {showPreview ? <>
+        <div className="summary">
+          <span>{rows.length} rows</span>
+          { <span className="tag ok"> matched</span>}
+          { <span className="tag new"> new character</span>}
+          { <span className="tag warn"> unlinked</span>}
+          { <span className="tag error"> need fixing</span>}
+          <label className="check">
+            <input type="checkbox" onChange={(e) => setCreateMissing(e.target.checked)} />
+            Create characters that don't exist yet
+          </label>
+        </div>
+
+        <div className="table-wrap">
+            <table className="grid">
+              <thead>
+                <tr><th>Quote</th><th>Character</th><th>Anime</th><th>Check</th><th /></tr>
+              </thead>
+              <tbody>
+                {rows.map((r, index) => (
+                  <tr key={r.key} className={`lvl-`}>
+
+                    <td className="quote-cell">
+                      <textarea className="bubble" value={r.quote} onChange={(e) => update(r.key, "quote", e.target.value)} rows={2}  aria-label="Quote" />
+                    </td>
+
+                    <td>
+                      <input value={r.character} list="char-names"  onChange={(e) => update(r.key, "character", e.target.value)}  aria-label="Character" />
+                    </td>
+                    
+                    <td>
+                      <input value={r.anime} list="anime-names" onChange={(e) => update(r.key, "anime", e.target.value)} aria-label="Anime" />
+                    </td>
+                    
+                    
+                    <td><button className="icon-btn" onClick={() => remove(r.key)} aria-label="Remove row">×</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+        </div>
+      </> : <></>}
 
       
     </section>
@@ -201,7 +202,7 @@ export default function BulkQuoteImporter() {
       )}
 
 
-        // const remove = (key) => setRows((rs) => rs.filter((r) => r.key !== key));
+        // 
 
   // async function runImport() {
   //   setBusy(true);
