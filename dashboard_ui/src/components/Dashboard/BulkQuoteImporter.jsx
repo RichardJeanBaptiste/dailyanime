@@ -20,7 +20,7 @@ export default function BulkQuoteImporter() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
   
-  const { isPending, isError, data, error } = useQuoteContext();
+  const { quotesQuery, charQuery } = useQuoteContext();
 
 
   function loadPreview () {
@@ -54,6 +54,10 @@ export default function BulkQuoteImporter() {
   const update = (key, field, value) => setRows((rs) => rs.map((r) => (r.key === key ? { ...r, [field]: value } : r)));
 
   const remove = (key) => setRows((rs) => rs.filter((r) => r.key !== key));
+
+  const checkQuote = () => {};
+  const checkChar = () => {};
+  const checkAnime = () => {};
  
   return (
     <section className="panel">
@@ -80,6 +84,10 @@ export default function BulkQuoteImporter() {
       </div>
 
       {notice && <p className={`notice ${notice.kind}`} role="status">{notice.text}</p>}
+
+      <p>{charQuery.isLoading ? "Loading" : ""}</p>
+      <p>{charQuery.isError ? "Error" : ""}</p>
+      <p onClick={() => console.log(charQuery.data)}>{charQuery.data ? charQuery.data[0].name : ""}</p>
       
 
       {showPreview ? <>
@@ -131,23 +139,6 @@ export default function BulkQuoteImporter() {
 }
 
 /**
- * 
- * <td><input value={r.character} list="char-names"  aria-label="Character" /></td>
-                    <td><input value={r.anime} list="anime-names"  aria-label="Anime" /></td>
- * 
- * {rows.map((r, index) => (
-                  <tr key={index} className={`lvl-`}>
-
-                    <td className="quote-cell">
-                      <textarea className="bubble" value={r.quote} rows={2}  aria-label="Quote" />
-                    </td>
-
-                    <td><input value={r.character} list="char-names"  aria-label="Character" /></td>
-                    <td><input value={r.anime} list="anime-names"  aria-label="Anime" /></td>
-                    
-                    <td><button className="icon-btn" onClick={() => remove(r.key)} aria-label="Remove row">×</button></td>
-                  </tr>
-                ))}
  * 
  * {checked.length > 0 && (
         <>
