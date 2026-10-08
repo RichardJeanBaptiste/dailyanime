@@ -43,9 +43,26 @@ export function QuoteProvider({children}) {
 
     const [quotesQuery, charQuery] = results;
 
+    // const charSet = () => {
+    //     let y = new Set();
+
+    //     charQuery.data.map((x) => {
+    //         //console.log(x.name);
+    //         y.add(x.name);
+    //     })
+
+    //     return y;
+    // }
+
+    let charSet;
+
+    if(charQuery) {
+        charSet = new Set(charQuery.data);
+    }
+        
     
     return (
-        <QuoteContext.Provider value={{ quotesQuery, charQuery }}>
+        <QuoteContext.Provider value={{ quotesQuery, charQuery, charSet }}>
             { children }
         </QuoteContext.Provider>   
     )

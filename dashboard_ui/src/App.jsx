@@ -3,7 +3,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { supabase } from './utils';
 import { useNavigate } from 'react-router';
-import { QuoteProvider } from './components/QuoteContext';
 import './App.css'
 
 

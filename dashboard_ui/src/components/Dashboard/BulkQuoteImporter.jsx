@@ -11,6 +11,11 @@ const SAMPLE = `quote,character,anime,episode
 "If you don't ta,ke risks, you can't crea,te a future.",Monkey D. Luffy,One Piece,`;
 
 
+const alert = "#e8457a"
+const success = "#1f9d6b"
+const newItem = "#2f4bff"
+const warning = "#b77d00"
+
 
 export default function BulkQuoteImporter() {
   const [raw, setRaw] = useState("");
@@ -20,7 +25,7 @@ export default function BulkQuoteImporter() {
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState(null);
   
-  const { quotesQuery, charQuery } = useQuoteContext();
+  const { quotesQuery, charQuery, charSet } = useQuoteContext();
 
 
   function loadPreview () {
@@ -28,6 +33,8 @@ export default function BulkQuoteImporter() {
         header: true,
         skipEmptyLines: true,
     });
+
+    
 
     result.data.map((x) => {
       if(!x.key) {
@@ -40,6 +47,8 @@ export default function BulkQuoteImporter() {
         ...prev,
         ...result.data
     ]);
+
+    // Append to the front of parse
 
     setShowPreview(true);
   }
@@ -55,15 +64,38 @@ export default function BulkQuoteImporter() {
 
   const remove = (key) => setRows((rs) => rs.filter((r) => r.key !== key));
 
-  const checkQuote = () => {};
-  const checkChar = () => {};
-  const checkAnime = () => {};
+  const checkQuote = (item) => {
+
+    if(item.quote == "") {
+      return alert
+    } else if(item.character == "") {
+        return warning
+    } else {
+      return success
+    }
+  };
+
+  const checkChar = (item) => {
+      if(item.character == "") {
+        return alert
+      } else {
+        return success
+      }
+  };
+
+  const checkAnime = (item) => {
+    if(item.anime == "") {
+      return alert
+    } else {
+      return success
+    }
+  };
  
   return (
     <section className="panel">
       <header className="panel-head">
         <h2>Add quotes</h2>
-        <p>Paste CSV or JSON, or upload a file. Columns:  character, anime, quote</p>
+        <p>Paste CSV or JSON, or upload a file. Columns:  quote, character, anime, </p>
       </header>
 
       <div className="paste-area">
@@ -85,10 +117,8 @@ export default function BulkQuoteImporter() {
 
       {notice && <p className={`notice ${notice.kind}`} role="status">{notice.text}</p>}
 
-      <p>{charQuery.isLoading ? "Loading" : ""}</p>
-      <p>{charQuery.isError ? "Error" : ""}</p>
-      <p onClick={() => console.log(charQuery.data)}>{charQuery.data ? charQuery.data[0].name : ""}</p>
-      
+
+      <p onClick={() => console.log(charSet)}>Test</p>
 
       {showPreview ? <>
         <div className="summary">
@@ -113,15 +143,15 @@ export default function BulkQuoteImporter() {
                   <tr key={r.key} className={`lvl-`}>
 
                     <td className="quote-cell">
-                      <textarea className="bubble" value={r.quote} onChange={(e) => update(r.key, "quote", e.target.value)} rows={2}  aria-label="Quote" />
+                      <textarea className="bubble" style={{ borderColor: checkQuote(r) }} value={r.quote} onChange={(e) => update(r.key, "quote", e.target.value)} rows={2}  aria-label="Quote" />
                     </td>
 
                     <td>
-                      <input value={r.character} list="char-names"  onChange={(e) => update(r.key, "character", e.target.value)}  aria-label="Character" />
+                      <input value={r.character} list="char-names"  style={{ borderColor: checkChar(r) }} onChange={(e) => update(r.key, "character", e.target.value)}  aria-label="Character" />
                     </td>
                     
                     <td>
-                      <input value={r.anime} list="anime-names" onChange={(e) => update(r.key, "anime", e.target.value)} aria-label="Anime" />
+                      <input value={r.anime} list="anime-names"  style={{ borderColor: checkAnime(r)}} onChange={(e) => update(r.key, "anime", e.target.value)} aria-label="Anime" />
                     </td>
                     
                     
